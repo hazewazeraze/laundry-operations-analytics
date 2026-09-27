@@ -1,5 +1,6 @@
 import streamlit as st
 
+import charts
 from data_loader import load_all, stat
 
 d = load_all()
@@ -10,6 +11,15 @@ sens = d["sla_sensitivity"]
 on_time_orders = stat(sla, "On-time orders")
 measurable = stat(sla, "Orders with SLA measurable")
 peak_backlog = float(d["backlog"]["cumulative_backlog"].max())
+
+PROMISE_ORDER = ["10 JAM", "1 HARI", "2 HARI", "3 HARI", "4 HARI", "5 HARI"]
+prom = (
+    d["sla_promise"]
+    .set_index("service_detail")
+    .reindex(PROMISE_ORDER)
+    .reset_index()
+)
+prom_mix = prom.assign(share=lambda t: t["orders"] / t["orders"].sum() * 100)
 
 with st.container(horizontal=True):
     st.metric(
@@ -49,20 +59,68 @@ col1, col2 = st.columns(2)
 
 with col1:
     with st.container(border=True):
-        st.subheader("On-time rate by promise")
-        st.bar_chart(
-            d["sla_promise"],
-            x="service_detail",
-            y="on_time_pct",
-            sort=False,
-            y_label="On-time (%)",
+        st.subheader("Order mix by promise")
+        st.altair_chart(
+            charts.bars_v(
+                prom_mix,
+                "service_detail",
+                "share",
+                title_y="Share of orders (%)",
+                fmt=".1f",
+                highlight="3 HARI",
+                sort=PROMISE_ORDER,
+            ),
+            width="stretch",
         )
         st.caption(
-            "Short promises hold (1 HARI: 93.2%). The weak link is the one most "
-            "customers pick."
+            "286 of 445 measurable orders — 64% — choose the 3-day promise."
         )
 
 with col2:
+    with st.container(border=True):
+        st.subheader("On-time by promise")
+        st.altair_chart(
+            charts.bars_v(
+                prom,
+                "service_detail",
+                "on_time_pct",
+                title_y="On-time (%)",
+                fmt=".1f",
+                highlight="3 HARI",
+                y_max=104,
+                sort=PROMISE_ORDER,
+            ),
+            width="stretch",
+        )
+        st.caption(
+            "1-day work holds at 93.2%; the promise most customers pick is the "
+            "one that slips (70.6%)."
+        )
+
+if "Orders crossing a Sunday" in sens["Metric"].values:
+    sunday_orders = stat(sens, "Orders crossing a Sunday")
+    cal_rate = stat(sens, "On-time rate calendar days (%)")
+    open_rate = stat(sens, "On-time rate open days (%)")
+    open_plus1 = stat(sens, "On-time rate open days +1 day (%)")
+
+    with st.container(border=True):
+        st.subheader("Same orders, two clocks: 75.5% vs 38%")
+        st.markdown(
+            f"""
+- A promise like **3 HARI means three working days**. Order in on Thursday → due Monday: Saturday counts, Sunday does not.
+- The raw calendar count punishes every closed Sunday — **{sunday_orders:.0f} of {measurable:.0f} measurable orders cross one** — and reads **{cal_rate:.1f}%**.
+- Counted the way the shop actually runs (Mon–Sat): **{open_rate:.1f}% on-time**. Add one working day of slack and it would be {open_plus1:.1f}% — so {open_rate:.1f}% is strict, not soft.
+- Almost nothing records an early finish (5 of {measurable:.0f}): completion is logged at close-out, so genuinely fast jobs rarely reach the record.
+"""
+        )
+        st.caption(
+            "Both readings computed in 02_exploratory_analysis.py and stored in "
+            "data/processed/sla_sensitivity_report.csv."
+        )
+
+col3, col4 = st.columns(2)
+
+with col3:
     with st.container(border=True):
         st.subheader("Turnaround by service")
         st.dataframe(
@@ -93,35 +151,22 @@ with col2:
             "different promises — not different speed."
         )
 
-if "Orders crossing a Sunday" in sens["Metric"].values:
-    sunday_orders = stat(sens, "Orders crossing a Sunday")
-    cal_rate = stat(sens, "On-time rate calendar days (%)")
-    open_rate = stat(sens, "On-time rate open days (%)")
-    open_plus1 = stat(sens, "On-time rate open days +1 day (%)")
-
+with col4:
     with st.container(border=True):
-        st.subheader("Same orders, two clocks: 75.5% vs 38%")
-        st.markdown(
-            f"""
-- A promise like **3 HARI means three working days**. Order in on Thursday → due Monday: Saturday counts, Sunday does not.
-- The raw calendar count punishes every closed Sunday — **{sunday_orders:.0f} of {measurable:.0f} measurable orders cross one** — and reads **{cal_rate:.1f}%**.
-- Counted the way the shop actually runs (Mon–Sat): **{open_rate:.1f}% on-time**. Add one working day of slack and it would be {open_plus1:.1f}% — so {open_rate:.1f}% is strict, not soft.
-- Almost nothing records an early finish (5 of {measurable:.0f}): completion is logged at close-out, so genuinely fast jobs rarely reach the record.
-"""
+        st.subheader("Cumulative backlog")
+        # The CSV keeps completions logged through early June for orders
+        # placed inside the window; those tail rows would read as negative
+        # open orders, so the chart stops at the study window (30 May).
+        window = d["backlog"][d["backlog"]["date"] <= "2026-05-30"]
+        st.altair_chart(
+            charts.line_area(
+                window,
+                "date",
+                "cumulative_backlog",
+                title_y="Open orders",
+            ),
+            width="stretch",
         )
-        st.caption(
-            "Both readings computed in 02_exploratory_analysis.py and stored in "
-            "data/processed/sla_sensitivity_report.csv."
-        )
-
-with st.container(border=True):
-    st.subheader("Cumulative backlog")
-    st.line_chart(
-        d["backlog"],
-        x="date",
-        y="cumulative_backlog",
-        y_label="Open orders",
-    )
 
 st.caption(
     "Backlog peaked at 30 open orders. Lateness is structural to the promise "

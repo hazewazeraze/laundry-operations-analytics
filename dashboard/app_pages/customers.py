@@ -1,5 +1,6 @@
 import streamlit as st
 
+import charts
 from data_loader import load_all, stat
 
 d = load_all()
@@ -90,26 +91,30 @@ col1, col2 = st.columns(2)
 with col1:
     with st.container(border=True):
         st.subheader("Revenue share by segment")
-        st.bar_chart(
-            segments,
-            x="segment",
-            y="revenue_percentage",
-            horizontal=True,
-            sort=False,
-            x_label="Share of observed revenue (%)",
+        st.altair_chart(
+            charts.bars_h(
+                segments,
+                "segment",
+                "revenue_percentage",
+                title_x="Share of observed revenue (%)",
+                fmt=".1f",
+                color_field="segment",
+            ),
+            width="stretch",
         )
 
 with col2:
     with st.container(border=True):
         st.subheader("Orders vs revenue per customer")
-        st.scatter_chart(
-            d["customers"],
-            x="total_orders",
-            y="total_revenue",
-            color="segment",
-            x_label="Orders",
-            y_label="Observed revenue (Rp)",
-            height=300,
+        st.altair_chart(
+            charts.scatter_segments(
+                d["customers"],
+                x="total_orders",
+                y="total_revenue",
+                title_x="Orders",
+                title_y="Observed revenue (Rp)",
+            ),
+            width="stretch",
         )
 
 with st.container(border=True):

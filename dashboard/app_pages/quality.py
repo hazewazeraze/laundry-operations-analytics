@@ -2,6 +2,7 @@ import pandas as pd
 
 import streamlit as st
 
+import charts
 from data_loader import load_all, sensitivity
 
 d = load_all()
@@ -22,13 +23,17 @@ with st.container(border=True):
     )
 
 st.subheader("Column coverage")
-st.bar_chart(
-    d["quality"],
-    x="column",
-    y="coverage_pct",
-    horizontal=True,
-    sort=False,
-    x_label="Coverage (%)",
+st.altair_chart(
+    charts.bars_h(
+        d["quality"],
+        "column",
+        "coverage_pct",
+        title_x="Coverage (%)",
+        fmt=".1f",
+        height=len(d["quality"]) * 16 + 40,
+        labels=False,
+    ),
+    width="stretch",
 )
 st.caption(
     "Revenue 66.2% · weight 91.9% · cost fields essentially absent — which is "
@@ -53,6 +58,76 @@ with st.container(border=True):
                 "Revenue coverage (%)", format="%.1f%%"
             ),
         },
+    )
+
+with st.expander("Data dictionary (key columns)"):
+    st.dataframe(
+        pd.DataFrame(
+            [
+                (
+                    "order_date, completion_date",
+                    "Order intake and completion dates",
+                ),
+                (
+                    "service_type",
+                    "Service class: PCS (337), PCL (62), SATUAN (48), PS (20)",
+                ),
+                (
+                    "service_detail",
+                    "Promised turnaround: 10 JAM, 1–5 HARI",
+                ),
+                (
+                    "service_category",
+                    "LAUNDRY PACKAGE (419) or PER ITEM (48, all SATUAN)",
+                ),
+                ("weight_kg", "Order weight, weight-based services (91.9%)"),
+                (
+                    "total_revenue",
+                    "Observed revenue per transaction (66.2% coverage)",
+                ),
+                (
+                    "unit_cost, express_cost",
+                    "Cost fields — essentially not captured (0.6% / 4.9%)",
+                ),
+                (
+                    "voucher_amount, voucher_code",
+                    "Voucher usage (21 of 467 orders)",
+                ),
+                ("customer_id", "Anonymized customer (Customer_001…155)"),
+                (
+                    "promised_days, service_days",
+                    "Promised vs actual turnaround (calendar days)",
+                ),
+                (
+                    "service_open_days",
+                    "Actual turnaround in working days — the SLA basis",
+                ),
+                (
+                    "is_late, days_late",
+                    "SLA flag and lateness, counted in working days",
+                ),
+                ("revenue_per_kg", "Observed revenue ÷ weight"),
+                (
+                    "has_customer, has_revenue, has_weight",
+                    "Completeness flags per field",
+                ),
+                (
+                    "data_quality_flag",
+                    "Row label: Complete, Missing Revenue, etc.",
+                ),
+                (
+                    "possible_duplicate",
+                    "Flagged near-duplicates — reported, never removed",
+                ),
+            ],
+            columns=["Column", "Meaning"],
+        ),
+        hide_index=True,
+        width="stretch",
+    )
+    st.caption(
+        "Full column reference: README.md → Data dictionary. Raw source is "
+        "never published."
     )
 
 with st.container(border=True):

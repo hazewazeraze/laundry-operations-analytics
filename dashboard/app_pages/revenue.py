@@ -3,6 +3,7 @@ import pandas as pd
 
 import streamlit as st
 
+import charts
 from data_loader import load_all, rp, stat
 
 d = load_all()
@@ -45,22 +46,30 @@ col1, col2 = st.columns(2)
 with col1:
     with st.container(border=True):
         st.subheader("Observed revenue by service")
-        st.bar_chart(
-            d["revenue_service"],
-            x="service_type",
-            y="revenue_observed",
-            sort=False,
-            y_label="Revenue (Rp)",
+        st.altair_chart(
+            charts.bars_v(
+                d["revenue_service"],
+                "service_type",
+                "revenue_observed",
+                title_y="Revenue (Rp)",
+                fmt=".3s",
+                tooltip_fmt=",.0f",
+            ),
+            width="stretch",
         )
 
 with col2:
     with st.container(border=True):
         st.subheader("Orders by service")
-        st.bar_chart(
-            d["revenue_service"],
-            x="service_type",
-            y="transactions",
-            sort=False,
+        st.altair_chart(
+            charts.bars_v(
+                d["revenue_service"],
+                "service_type",
+                "transactions",
+                title_y="Orders",
+                fmt=",.0f",
+            ),
+            width="stretch",
         )
 
 with st.container(border=True):
@@ -127,7 +136,7 @@ with st.container(border=True):
 
     line = (
         alt.Chart(pareto)
-        .mark_line(color="#4c9be8", strokeWidth=2)
+        .mark_line(color=charts.PRIMARY, strokeWidth=2)
         .encode(
             x=alt.X(
                 "cum_pct_customers:Q",
@@ -149,17 +158,17 @@ with st.container(border=True):
 
     ref_x = (
         alt.Chart(pd.DataFrame({"v": [20]}))
-        .mark_rule(color="#d95f4f", strokeDash=[5, 5])
+        .mark_rule(color=charts.ACCENT, strokeDash=[5, 5])
         .encode(x="v:Q")
     )
     ref_y = (
         alt.Chart(pd.DataFrame({"v": [57.7]}))
-        .mark_rule(color="#d95f4f", strokeDash=[5, 5])
+        .mark_rule(color=charts.ACCENT, strokeDash=[5, 5])
         .encode(y="v:Q")
     )
     point = (
         alt.Chart(pd.DataFrame({"x": [20], "y": [57.7]}))
-        .mark_point(filled=True, size=90, color="#d95f4f")
+        .mark_point(filled=True, size=90, color=charts.ACCENT)
         .encode(x="x:Q", y="y:Q")
     )
     st.altair_chart(ref_x + ref_y + point + line, width="stretch")

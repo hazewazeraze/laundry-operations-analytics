@@ -2,6 +2,7 @@ import altair as alt
 
 import streamlit as st
 
+import charts
 from data_loader import load_all, rp, stat
 
 d = load_all()
@@ -67,17 +68,30 @@ col1, col2 = st.columns(2)
 with col1:
     with st.container(border=True):
         st.subheader("Orders by month")
-        st.bar_chart(d["monthly"], x="order_month", y="orders", sort=False)
+        st.altair_chart(
+            charts.bars_v(
+                d["monthly"],
+                "order_month",
+                "orders",
+                title_y="Orders",
+                fmt=",.0f",
+            ),
+            width="stretch",
+        )
 
 with col2:
     with st.container(border=True):
         st.subheader("Observed revenue by month")
-        st.bar_chart(
-            d["monthly"],
-            x="order_month",
-            y="revenue",
-            sort=False,
-            y_label="Revenue (Rp)",
+        st.altair_chart(
+            charts.bars_v(
+                d["monthly"],
+                "order_month",
+                "revenue",
+                title_y="Revenue (Rp)",
+                fmt=".3s",
+                tooltip_fmt=",.0f",
+            ),
+            width="stretch",
         )
 
 with st.container(border=True):
@@ -86,7 +100,7 @@ with st.container(border=True):
 
     bars = (
         alt.Chart(weekday)
-        .mark_bar(color="#6aa8e8")
+        .mark_bar(color=charts.PRIMARY, cornerRadiusTopLeft=4, cornerRadiusTopRight=4)
         .encode(
             x=alt.X("day:N", sort=None, title=None),
             y=alt.Y("observed:Q", title="Orders"),
@@ -100,7 +114,7 @@ with st.container(border=True):
     )
     expected = (
         alt.Chart(weekday)
-        .mark_line(color="#d95f4f", point=True, strokeWidth=2)
+        .mark_line(color=charts.ACCENT, point=True, strokeWidth=2)
         .encode(x=alt.X("day:N", sort=None), y=alt.Y("expected:Q", title="Orders"))
     )
     st.altair_chart(bars + expected, width="stretch")
