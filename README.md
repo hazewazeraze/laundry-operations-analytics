@@ -226,7 +226,7 @@ Turnaround columns are calendar days; the late share uses the open-day SLA.
 
 ## Statistical Validation (`05_hypothesis_testing.py`)
 
-All tests are permutation, bootstrap, or Monte Carlo methods implemented in NumPy — no parametric distribution assumptions. Supported, rejected, and inconclusive verdicts are all reported:
+All tests are permutation, bootstrap, or Monte Carlo methods implemented in NumPy — no parametric distribution assumptions, evaluated at a significance threshold of **α = 0.05**. Supported, rejected, and inconclusive verdicts are all reported:
 
 | Hypothesis | Verdict |
 |---|---|
@@ -250,20 +250,20 @@ Full statistics — tests, statistics, p-values, confidence intervals — are in
 **Implication:** Retention of high-value customers outranks new-customer acquisition in priority.
 
 ### Finding 2 — Frequency buys volume, not value per order
-**Evidence:** Order frequency correlates strongly with total revenue (ρ = 0.84) but not with average order value (ρ = 0.13, not significant).
+**Evidence:** Order frequency correlates strongly with total revenue (Spearman ρ = 0.84 — partly mechanical, since revenue is summed over orders) but not with average order value (ρ = 0.13, not significant).
 **Implication:** Do not target customers on order count alone — measure revenue per order. The 8 High-Value Occasional customers average Rp 43,426 per order (2.7× the Regular average) on only 23 orders.
 
 ### Finding 3 — The biggest problem is revenue capture, not revenue loss
-**Evidence:** SATUAN orders record revenue on 2.1% of rows; overall coverage is 66.2%; estimated unrecorded value is ~Rp 3.1M (≈30% of observed), based on observed transaction patterns.
-**Implication:** Fixing point-of-sale capture for per-item orders is the single highest-value operational change the data can justify.
+**Evidence:** SATUAN (per-item) orders record revenue on just 1 of 48 rows (2.1%); overall coverage is 66.2%. The modelled shortfall of ~Rp 3.1M (≈30% of observed) covers the weighted services alone — per-item orders carry no weight, so they sit outside the estimate entirely.
+**Implication:** Closing the revenue-capture gap is the highest-value operational change the data can justify. Per-item capture is the worst case (1 of 48), but its share of the gap is not estimable from this data — treat Rp 3.1M as a floor, not a total.
 
 ### Finding 4 — The SLA fails where the promise is standard, not where volume is high
 **Evidence:** Overall on-time = 75.5% in open days (the raw calendar count reads 38.0% because 233 of the 445 measurable orders span a closed Sunday); the 3 HARI promise (286 orders, 64% of measurable orders) is on-time 70.6% versus 93.2% for the 1-day promise. Intake volume does not explain lateness (test rejected, peak backlog only 30 orders).
 **Implication:** Re-engineer the 3-day promise; adding capacity on busy days would not fix the miss rate.
 
 ### Finding 5 — Demand is structurally uneven across the week
-**Evidence:** Monday runs ~30% and Friday ~27% above the flat expectation, Thursday 39% below (test supported).
-**Implication:** Shift staffing toward Monday/Friday rather than smoothing every day equally.
+**Evidence:** Monday runs ~30% and Friday ~27% above the flat expectation, Thursday 39% below (test supported). The test rejects a flat week but does not identify a cause, and part of Monday's excess is demand carried over from the closed Sunday.
+**Implication:** Staff toward Friday and away from Thursday rather than smoothing every day equally; treat Monday as partly closure spillover until a longer window confirms it.
 
 ### Finding 6 — Segment conclusions are real but coverage-sensitive
 **Evidence:** Premium holds 55.9% of identified-customer revenue on all customers, but 39.6% on the ≥80%-coverage subset (n = 75).
