@@ -16,7 +16,7 @@ Paste-ready English copy for the portfolio landing page. Layout notes and publis
 
 ## 1. Hero
 
-**H1:** Laundry Operations Analytics
+**H1:** Laundry Kampus Analytics
 
 **Subtitle:** Analyzing customer value and operational reliability through transaction data.
 
@@ -28,7 +28,7 @@ Paste-ready English copy for the portfolio landing page. Layout notes and publis
 
 **Stat strip (big numbers, one row):**
 
-| 467 | 155 | 66.2% | 38% | 8 |
+| 467 | 155 | 66.2% | 75.5% | 8 |
 |---|---|---|---|---|
 | validated transactions | identified customers | revenue coverage | on-time delivery | hypothesis tests |
 
@@ -113,11 +113,11 @@ One-liners under each step (optional, small text):
 
 ### 03 — Operational reliability opportunity
 
-**Big number:** 38%
+**Big number:** 75.5%
 
-**Headline:** of orders completed on time.
+**Headline:** of orders completed on time, measured in open days (Sunday closed).
 
-**Sub:** The standard 3-day promise is the weak point — 26.6% on-time across 64% of measurable orders, while the 1-day promise holds at 79.5% among its measurable orders. Daily intake volume does not explain the lateness.
+**Sub:** The standard 3-day promise is the weak point — 70.6% on-time across 64% of measurable orders, while the 1-day promise holds at 93.2%. The raw calendar count reads 38% because 233 measurable orders span a closed Sunday. Daily intake volume does not explain the lateness.
 
 ---
 
@@ -161,7 +161,7 @@ One-liners under each step (optional, small text):
 
 - Revenue insights cover only transactions where revenue was recorded (66.2% coverage; ~30% estimated unrecorded).
 - Two-month window (April–May 2026) — no seasonality or lifetime-value conclusions.
-- Date-level data only — SLA is measured in days, not hours.
+- Date-level data only — SLA is measured in whole days (Sundays closed), not hours; the raw calendar reading (38%) is kept as a reference in the sensitivity report.
 - Segment shares are directional: Premium shifts from 55.9% to 39.6% on the ≥80%-coverage subset.
 
 ---
@@ -189,7 +189,7 @@ Links: GitHub · Dashboard · README
 
 ```
 [ Hero: title · subtitle · body · tech line · View Dashboard / View GitHub ]
-[ Stat strip: 467 · 155 · 66.2% · 38% · 8 ]
+[ Stat strip: 467 · 155 · 66.2% · 75.5% · 8 ]
 [ Overview: heading + paragraph, 2-column or centered ]
 [ Business challenges: 3 cards ]
 [ Analytical workflow: horizontal timeline, 6 steps ]

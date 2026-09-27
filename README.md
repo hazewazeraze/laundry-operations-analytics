@@ -1,8 +1,8 @@
-# Laundry Operations Analytics
+# Laundry Kampus Analytics
 
 > Analyzing customer value and operational reliability through transaction data.
 
-**Scope:** campus laundry study case (anonymized) · **Period:** 1 April – 30 May 2026 · **Records:** 467 validated transactions · 155 identified customers
+**Scope:** Laundry Kampus study case (anonymized) · **Period:** 1 April – 30 May 2026 · **Records:** 467 validated transactions · 155 identified customers
 **Stack:** Python · pandas · NumPy · Matplotlib · Streamlit · permutation and bootstrap statistics
 **Live:** [laundry-operations-analytics.streamlit.app](https://laundry-operations-analytics.streamlit.app/)
 
@@ -62,8 +62,9 @@ Central question:
 | `unit_cost`, `express_cost` | Cost fields — essentially not captured (0.6% / 4.9% coverage) |
 | `voucher_amount`, `voucher_code` | Voucher usage (21 of 467 orders used a voucher) |
 | `customer_id` | Standardized customer identifier |
-| `promised_days`, `service_days` | Promised vs actual turnaround (days) |
-| `is_late`, `days_late` | SLA compliance flag and lateness in days |
+| `promised_days`, `service_days` | Promised turnaround vs actual turnaround in calendar days |
+| `service_open_days` | Actual turnaround in open days (Monday–Saturday) — the basis for all SLA figures |
+| `is_late`, `days_late` | SLA compliance flag and lateness, both in open days |
 | `revenue_per_kg` | Observed revenue ÷ weight |
 | `has_customer`, `has_revenue`, `has_weight`, `has_completion` | Completeness flags |
 | `data_quality_flag` | Row-level quality label (e.g. `Complete`, `Missing Revenue`) |
@@ -145,12 +146,12 @@ Customers were segmented on observed revenue and order frequency (quartile-based
 
 ### Segment × SLA
 
-| Segment | Measurable orders | Mean turnaround (days) | On-time |
+| Segment | Measurable orders | Mean turnaround (open days) | On-time |
 |---|---:|---:|---:|
-| High-Value Occasional | 22 | 2.86 | 54.5% |
-| Premium Customer | 210 | 3.18 | 39.0% |
-| Low Frequency Customer | 118 | 3.42 | 37.3% |
-| Regular Customer | 95 | 3.64 | 32.6% |
+| High-Value Occasional | 22 | 2.50 | 86.4% |
+| Premium Customer | 210 | 2.66 | 75.7% |
+| Low Frequency Customer | 118 | 2.85 | 74.6% |
+| Regular Customer | 95 | 3.11 | 73.7% |
 
 ### Robustness Check
 
@@ -174,35 +175,37 @@ The Premium share is sensitive to revenue missingness, so segment sizes and shar
 | Metric | Value |
 |---|---|
 | Orders with measurable SLA | 445 |
-| On-time orders | 169 → **38.0% on-time** |
-| Average lateness (late orders only) | 1.36 days |
-| Median turnaround | 4.0 days |
+| On-time orders | 336 → **75.5% on-time (open days)** |
+| Average lateness (late orders only) | 1.29 open days |
+| Median turnaround | 4.0 days (calendar) |
 
-The 38% comes from raw date arithmetic — an order counts as late the moment completion minus order crosses the promise, with no timestamps and no tolerance. 211 of the 276 late orders miss by exactly one day; give it one day of slack and the rate rises to **85.4%** (`sla_sensitivity_report.csv`). `completion_date` records when completion was logged, and 3 HARI orders cluster at days 3–5, so faster-than-promise finishes rarely show up in the data.
+SLA is measured in **open days — Monday to Saturday, Sunday closed** — because promises like `3 HARI` are handling days. The raw calendar count reads only **38.0%**: 233 of the 445 measurable orders span at least one Sunday, and every closed day would be counted as lateness. With one open day of slack the rate would be 99.3%, so 75.5% is a strict reading, not a generous one (`sla_sensitivity_report.csv`). One caveat in the other direction: only 5 of 445 orders are recorded as finishing ahead of promise, so genuinely fast jobs barely reach the record either.
 
 ### On-time Rate by Promised Turnaround
 
-| Promise | Orders | Mean actual days | On-time |
+| Promise | Orders | Mean open days | On-time |
 |---|---:|---:|---:|
-| 1 HARI | 73 | 1.21 | **79.5%** |
-| 10 JAM | 7 | 6.00 | 57.1% |
-| 2 HARI | 71 | 2.69 | 42.3% |
-| 3 HARI | 286 | 3.90 | **26.6%** |
-| 4 HARI | 7 | 5.57 | 0.0% |
-| 5 HARI | 1 | 5.00 | 100% (n=1) |
+| 1 HARI | 73 | 1.07 | **93.2%** |
+| 10 JAM | 7 | 5.14 | 57.1% |
+| 2 HARI | 71 | 2.18 | 81.7% |
+| 3 HARI | 286 | 3.28 | 70.6% |
+| 4 HARI | 7 | 4.57 | 42.9% |
+| 5 HARI | 1 | 4.00 | 100% (n=1) |
 
-The failure concentrates in the **3 HARI promise — 286 orders, 64% of all measurable orders, only 26.6% on-time**. Short promises are mostly kept; the standard promise is the weak point.
+The weak point is still the **3 HARI promise — 286 orders, 64% of all measurable orders, 70.6% on-time**, against 93.2% for the 1-day promise. Reliability breaks down on the standard promise, not the rush ones.
 
 ![On-time rate by promise](outputs/charts/05_on_time_rate.png)
 
 ### Turnaround by Service
 
+Turnaround columns are calendar days; the late share uses the open-day SLA.
+
 | Service | Orders | Median days | P90 days | Late orders (%) |
 |---|---:|---:|---:|---:|
-| PCS | 327 | 3.0 | 4.4 | 59.3% |
-| PCL | 60 | 4.0 | 5.0 | 68.3% |
-| PS | 16 | 4.0 | 4.5 | 68.8% |
-| SATUAN | 42 | 4.0 | 5.0 | 71.4% |
+| PCS | 327 | 3.0 | 4.4 | 22.0% |
+| PCL | 60 | 4.0 | 5.0 | 26.7% |
+| PS | 16 | 4.0 | 4.5 | 18.8% |
+| SATUAN | 42 | 4.0 | 5.0 | 42.9% |
 
 ### Backlog and Intake
 
@@ -245,7 +248,7 @@ Full statistics — tests, statistics, p-values, confidence intervals — are in
 **Implication:** Fixing point-of-sale capture for per-item orders is the single highest-value operational change the data can justify.
 
 ### Finding 4 — The SLA fails where the promise is standard, not where volume is high
-**Evidence:** Overall on-time = 38%; the 3 HARI promise (286 orders, 64% of measurable orders) is on-time only 26.6%. Intake volume does not explain lateness (test rejected, peak backlog only 30 orders). The 38% is also a floor: 76% of late orders miss by a single day, and on-time reaches 85.4% with one day of tolerance.
+**Evidence:** Overall on-time = 75.5% in open days (the raw calendar count reads 38.0% because 233 of the 445 measurable orders span a closed Sunday); the 3 HARI promise (286 orders, 64% of measurable orders) is on-time 70.6% versus 93.2% for the 1-day promise. Intake volume does not explain lateness (test rejected, peak backlog only 30 orders).
 **Implication:** Re-engineer the 3-day promise; adding capacity on busy days would not fix the miss rate.
 
 ### Finding 5 — Demand is structurally uneven across the week
@@ -262,7 +265,7 @@ Full statistics — tests, statistics, p-values, confidence intervals — are in
 
 - **Incomplete revenue.** All financial figures are observed revenue; ~30% of transaction value is estimated to be unrecorded.
 - **Short window.** Two months (April–May 2026) — no seasonality or long-term cohort/CLV conclusions.
-- **No timestamps.** Dates only, so SLA is measured in whole/partial days, not hours (except the `10 JAM` promise label); without tolerance the on-time rate stays conservative (38%, or 85.4% with one day of slack).
+- **No timestamps.** Dates only, so SLA is measured in whole days, not hours (except the `10 JAM` promise label). Promises are evaluated in open days (Sunday closed); the raw calendar reading — 38.0% on-time — stays in `sla_sensitivity_report.csv` as a reference.
 - **Study-case data.** Field records from a campus laundry, anonymized and cleaned — not a verbatim mirror of live operations (confidentiality), and not an operational performance report.
 - **Names before standardization.** Customer identity comes from free-text names; 20 transactions have none and are excluded from customer-level analysis.
 - **Segment coverage sensitivity.** Segment revenue shares shift materially on the ≥80%-coverage subset (see robustness table).
@@ -273,7 +276,7 @@ Full statistics — tests, statistics, p-values, confidence intervals — are in
 ## Project Structure
 
 ```
-Laundry Analytics/
+Laundry Kampus Analytics/
 ├── README.md
 ├── requirements.txt
 ├── data/

@@ -317,7 +317,7 @@ segment_sla = (
     .groupby("segment")
     .agg(
         orders=("no", "size"),
-        mean_days=("service_days", "mean"),
+        mean_days=("service_open_days", "mean"),
         on_time=(
             "is_late",
             lambda s: s.eq(False).sum(),

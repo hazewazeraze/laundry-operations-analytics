@@ -9,52 +9,55 @@ kpi = d["kpi"]
 
 with st.container(horizontal=True):
     st.metric(
-        "Transaksi",
+        "Transactions",
         f"{stat(kpi, 'Total Transactions'):,.0f}",
         border=True,
     )
     st.metric(
-        "Pendapatan (observed)",
+        "Observed revenue",
         rp(stat(kpi, "Total Revenue (observed)")),
         border=True,
     )
     st.metric(
-        "Pelanggan teridentifikasi",
+        "Identified customers",
         f"{stat(kpi, 'Unique Customers'):,.0f}",
         border=True,
     )
     st.metric(
-        "Cakupan revenue",
+        "Revenue coverage",
         f"{stat(kpi, 'Revenue Coverage (%)'):.1f}%",
         border=True,
     )
 
 with st.container(horizontal=True):
     st.metric(
-        "Tingkat repeat customer",
+        "Repeat customer rate",
         f"{stat(kpi, 'Repeat Customer Rate (%)'):.1f}%",
         border=True,
     )
     st.metric(
-        "Kontribusi top 20% pelanggan",
+        "Top 20% revenue share",
         f"{stat(kpi, 'Top 20% Revenue Share (%)'):.1f}%",
         border=True,
     )
     st.metric(
-        "Tingkat on-time",
+        "On-time rate",
         f"{stat(kpi, 'On-time Rate (%)'):.1f}%",
+        help="Open days, Sunday closed.",
         border=True,
     )
     st.metric(
         "Median turnaround",
-        f"{stat(kpi, 'Median Turnaround (days)'):.1f} hari",
+        f"{stat(kpi, 'Median Turnaround (days)'):.1f} days",
+        help="Calendar days from order to completion.",
         border=True,
     )
 
 st.info(
-    "Pendapatan observed terkonsentrasi di segelintir pelanggan (top 20% → 57.7%). "
-    "Janji pengiriman hanya dipenuhi 38% dari waktu — titik lemahnya ada di janji "
-    "3 hari. Revenue tercatat di 66.2% transaksi, jadi semua angka keuangan adalah "
+    "Observed revenue concentrates in a smaller customer group (top 20% → 57.7%). "
+    "Delivery promises are kept 75.5% of the time when measured in open days "
+    "(the raw calendar count says 38% — it counts closed Sundays as lateness). "
+    "Revenue is recorded on 66.2% of transactions, so every financial figure is "
     "observed revenue."
 )
 
@@ -62,12 +65,12 @@ col1, col2 = st.columns(2)
 
 with col1:
     with st.container(border=True):
-        st.subheader("Order per bulan")
+        st.subheader("Orders by month")
         st.bar_chart(d["monthly"], x="order_month", y="orders", sort=False)
 
 with col2:
     with st.container(border=True):
-        st.subheader("Pendapatan observed per bulan")
+        st.subheader("Observed revenue by month")
         st.bar_chart(
             d["monthly"],
             x="order_month",
@@ -77,7 +80,7 @@ with col2:
         )
 
 with st.container(border=True):
-    st.subheader("Pola hari kerja vs ekspektasi")
+    st.subheader("Weekday demand vs expected")
     weekday = d["weekday"]
 
     bars = (
@@ -102,10 +105,10 @@ with st.container(border=True):
     st.altair_chart(bars + expected, width="stretch")
 
 st.caption(
-    "Senin +29.9% dan Jumat +27.3% di atas ekspektasi datar; Kamis −39.0%. "
-    "Minggu libur, dikecualikan."
+    "Monday +29.9% and Friday +27.3% above a flat expectation; Thursday −39.0%. "
+    "Sunday is excluded (closed)."
 )
 st.caption(
-    "Alur data: 472 baris export → 467 transaksi valid → 447 teridentifikasi "
-    "→ 155 pelanggan."
+    "Data funnel: 472 exported rows → 467 validated transactions → 447 identifiable "
+    "→ 155 customers."
 )

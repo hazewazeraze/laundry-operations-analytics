@@ -507,6 +507,25 @@ df["service_days"] = raw_days.where(
 )
 
 
+# Turnaround in open days. The shop is closed on Sunday, and promises such as
+# "3 HARI" are handling days — counting the closed day as lateness was
+# penalizing orders that simply span a weekend.
+valid_dates = raw_days >= 0
+
+open_days = pd.Series(
+    np.busday_count(
+        df.loc[valid_dates, "order_date"]
+        .values.astype("datetime64[D]"),
+        df.loc[valid_dates, "completion_date"]
+        .values.astype("datetime64[D]"),
+        weekmask="Mon Tue Wed Thu Fri Sat",
+    ),
+    index=df.index[valid_dates],
+)
+
+df["service_open_days"] = open_days.reindex(df.index)
+
+
 df["revenue_per_kg"] = np.where(
     df["total_revenue"].notna()
     &
@@ -558,14 +577,14 @@ df["promised_days"] = (
 
 
 df["is_late"] = (
-    df["service_days"]
+    df["service_open_days"]
     >
     df["promised_days"]
 ).astype("boolean")
 
 
 df.loc[
-    df["service_days"].isna()
+    df["service_open_days"].isna()
     |
     df["promised_days"].isna(),
     "is_late"
@@ -573,11 +592,11 @@ df.loc[
 
 
 df["days_late"] = (
-    df["service_days"]
+    df["service_open_days"]
     -
     df["promised_days"]
 ).where(
-    df["service_days"].notna()
+    df["service_open_days"].notna()
 )
 
 

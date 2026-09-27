@@ -8,29 +8,25 @@ segments = d["segments"]
 
 with st.container(horizontal=True):
     st.metric(
-        "Pelanggan teridentifikasi",
+        "Identified customers",
         f"{stat(kpi, 'Unique Customers'):,.0f}",
         border=True,
     )
     st.metric(
-        "Tingkat repeat customer",
+        "Repeat customer rate",
         f"{stat(kpi, 'Repeat Customer Rate (%)'):.1f}%",
         border=True,
     )
     st.metric(
-        "Kontribusi top 20% pelanggan",
+        "Top 20% revenue share",
         f"{stat(kpi, 'Top 20% Revenue Share (%)'):.1f}%",
         border=True,
     )
     repeat_share = stat(d["concentration"], "Repeat share of revenue (%)")
-    st.metric(
-        "Kontribusi revenue repeat customer",
-        f"{repeat_share:.1f}%",
-        border=True,
-    )
+    st.metric("Repeat customer revenue share", f"{repeat_share:.1f}%", border=True)
 
 with st.container(border=True):
-    st.subheader("Segment pelanggan (observed)")
+    st.subheader("Observed segments")
     st.dataframe(
         segments.rename(
             columns={
@@ -60,15 +56,15 @@ with st.container(border=True):
         },
     )
     st.caption(
-        "Pola transaksi observed dalam jendela dua bulan — bukan nilai pelanggan "
-        "seumur hidup. Revenue segment hanya mencakup order dengan nama pelanggan."
+        "Observed transaction patterns in the two-month window — not lifetime "
+        "customer value. Segment revenue covers identified-customer orders only."
     )
 
 col1, col2 = st.columns(2)
 
 with col1:
     with st.container(border=True):
-        st.subheader("Share pendapatan per segment")
+        st.subheader("Revenue share by segment")
         st.bar_chart(
             segments,
             x="segment",
@@ -80,7 +76,7 @@ with col1:
 
 with col2:
     with st.container(border=True):
-        st.subheader("Order vs pendapatan per pelanggan")
+        st.subheader("Orders vs revenue per customer")
         st.scatter_chart(
             d["customers"],
             x="total_orders",
@@ -92,7 +88,7 @@ with col2:
         )
 
 with st.container(border=True):
-    st.subheader("Performa segment vs SLA")
+    st.subheader("Segment performance vs SLA")
     col_a, col_b = st.columns(2)
 
     with col_a:
@@ -101,15 +97,15 @@ with st.container(border=True):
                 columns={
                     "segment": "Segment",
                     "orders": "Measurable orders",
-                    "mean_days": "Mean turnaround (days)",
+                    "mean_days": "Mean turnaround (open days)",
                     "on_time": "On-time orders",
                     "on_time_pct": "On-time (%)",
                 }
             ),
             hide_index=True,
             column_config={
-                "Mean turnaround (days)": st.column_config.NumberColumn(
-                    "Mean turnaround (days)", format="%.2f"
+                "Mean turnaround (open days)": st.column_config.NumberColumn(
+                    "Mean turnaround (open days)", format="%.2f"
                 ),
                 "On-time (%)": st.column_config.NumberColumn(
                     "On-time (%)", format="%.1f%%"
@@ -135,11 +131,11 @@ with st.container(border=True):
             },
         )
         st.caption(
-            "Frekuensi mendorong total pendapatan, tapi tidak nilai per order — "
-            "asosiasi keduanya tidak beda secara signifikan dari nol."
+            "Frequency drives total revenue, but not value per order — "
+            "the latter association is not statistically distinguishable from zero."
         )
 
-with st.expander("Top 10 pelanggan berdasarkan observed revenue"):
+with st.expander("Top 10 customers by observed revenue"):
     top = d["customers"].nlargest(10, "total_revenue")[
         [
             "customer_id",
@@ -178,6 +174,6 @@ with st.expander("Top 10 pelanggan berdasarkan observed revenue"):
     )
 
 st.caption(
-    "Uji robustness share segment terhadap cakupan revenue ada di halaman "
-    "Kualitas data."
+    "Robustness of segment shares against revenue coverage is checked on the "
+    "Data quality page."
 )

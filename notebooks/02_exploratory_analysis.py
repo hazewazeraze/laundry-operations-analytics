@@ -765,7 +765,7 @@ sla_by_promise = (
     .groupby("service_detail")
     .agg(
         orders=("no", "size"),
-        mean_days=("service_days", "mean"),
+        mean_days=("service_open_days", "mean"),
         on_time=(
             "is_late",
             lambda s: s.eq(False).sum(),
@@ -818,38 +818,58 @@ print(
 )
 
 
-late_orders = sla[
-    sla["is_late"] == True
-]
-
-late_within_one_day = int(
-    late_orders["days_late"]
-    .le(1)
-    .sum()
-)
-
-on_time_plus_one = int(
+# The raw calendar count treats every closed Sunday as lateness, which is why
+# it can look far worse than the shop's real performance. Show both readings
+# side by side so the difference is documented instead of hidden.
+on_time_calendar = int(
     (
         sla["service_days"]
+        <= sla["promised_days"]
+    ).sum()
+)
+
+on_time_open_plus_one = int(
+    (
+        sla["service_open_days"]
         <= sla["promised_days"] + 1
     ).sum()
+)
+
+crossing_sunday = int(
+    (
+        sla["service_days"]
+        -
+        sla["service_open_days"]
+    ).gt(0).sum()
 )
 
 sla_sensitivity = pd.DataFrame(
     {
         "Metric": [
             "Orders with SLA measurable",
-            "On-time orders (strict)",
-            "On-time rate strict (%)",
-            "Late orders",
-            "Late by at most 1 day",
-            "Late by more than 1 day",
-            "On-time orders (+1 day tolerance)",
-            "On-time rate +1 day (%)",
+            "Orders crossing a Sunday",
+            "On-time orders (calendar days)",
+            "On-time rate calendar days (%)",
+            "On-time orders (open days)",
+            "On-time rate open days (%)",
+            "On-time rate open days +1 day (%)",
         ],
 
         "Value": [
             len(sla),
+
+            crossing_sunday,
+
+            on_time_calendar,
+
+            round(
+                on_time_calendar
+                /
+                len(sla)
+                *
+                100,
+                1
+            ),
 
             int(
                 sla["is_late"]
@@ -868,18 +888,8 @@ sla_sensitivity = pd.DataFrame(
                 1
             ),
 
-            len(late_orders),
-
-            late_within_one_day,
-
-            len(late_orders)
-            -
-            late_within_one_day,
-
-            on_time_plus_one,
-
             round(
-                on_time_plus_one
+                on_time_open_plus_one
                 /
                 len(sla)
                 *
@@ -891,7 +901,7 @@ sla_sensitivity = pd.DataFrame(
 )
 
 
-print("\nSLA sensitivity (strict vs 1-day tolerance):")
+print("\nSLA sensitivity (calendar days vs open days):")
 print(sla_sensitivity)
 
 
