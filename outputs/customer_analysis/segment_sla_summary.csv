@@ -1,0 +1,5 @@
+segment,orders,mean_days,on_time,on_time_pct
+High-Value Occasional,22,2.86,12,54.5
+Low Frequency Customer,118,3.42,44,37.3
+Premium Customer,210,3.18,82,39.0
+Regular Customer,95,3.64,31,32.6

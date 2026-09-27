@@ -1,0 +1,156 @@
+customer_id,total_orders,orders_with_revenue,total_revenue,total_weight,last_order_date,revenue_coverage,average_order_value,recency_days,segment
+Customer_001,6,5,127280.0,19.38,2026-05-18,0.8333333333333334,25456.0,12,Premium Customer
+Customer_002,1,1,22225.0,3.175,2026-05-09,1.0,22225.0,21,Low Frequency Customer
+Customer_003,1,1,24080.0,3.44,2026-04-24,1.0,24080.0,36,Low Frequency Customer
+Customer_004,1,0,0.0,0.0,2026-05-13,0.0,,17,Low Frequency Customer
+Customer_005,9,6,192040.0,38.16,2026-05-26,0.6666666666666666,32006.666666666668,4,Premium Customer
+Customer_006,2,2,51800.0,7.4,2026-05-22,1.0,25900.0,8,Low Frequency Customer
+Customer_007,1,0,0.0,0.0,2026-04-22,0.0,,38,Low Frequency Customer
+Customer_008,11,8,201960.0,33.155,2026-05-21,0.7272727272727273,25245.0,9,Premium Customer
+Customer_009,1,1,24000.0,3.0,2026-05-12,1.0,24000.0,18,Low Frequency Customer
+Customer_010,5,4,165945.0,19.43,2026-05-25,0.8,41486.25,5,Premium Customer
+Customer_011,1,1,29160.0,3.645,2026-04-17,1.0,29160.0,43,Low Frequency Customer
+Customer_012,2,1,52150.0,7.45,2026-05-22,0.5,52150.0,8,Low Frequency Customer
+Customer_013,1,0,0.0,0.0,2026-05-18,0.0,,12,Low Frequency Customer
+Customer_014,1,1,35875.0,5.125,2026-04-10,1.0,35875.0,50,Low Frequency Customer
+Customer_015,1,0,0.0,0.0,2026-05-15,0.0,,15,Low Frequency Customer
+Customer_016,9,9,227615.0,27.1,2026-05-26,1.0,25290.555555555555,4,Premium Customer
+Customer_017,1,0,0.0,0.0,2026-04-22,0.0,,38,Low Frequency Customer
+Customer_018,1,1,22750.0,3.25,2026-05-22,1.0,22750.0,8,Low Frequency Customer
+Customer_019,5,4,92550.0,19.13,2026-05-26,0.8,23137.5,4,Premium Customer
+Customer_020,2,0,0.0,19.585,2026-05-11,0.0,,19,Low Frequency Customer
+Customer_021,3,3,129780.0,18.54,2026-05-13,1.0,43260.0,17,High-Value Occasional
+Customer_022,8,7,153000.0,24.0,2026-05-06,0.875,21857.14285714286,24,Premium Customer
+Customer_023,6,6,160165.0,18.905,2026-05-23,1.0,26694.166666666668,7,Premium Customer
+Customer_024,6,3,89615.0,26.08,2026-05-30,0.5,29871.666666666668,0,Regular Customer
+Customer_025,3,3,62380.0,10.34,2026-05-08,1.0,20793.333333333332,22,Regular Customer
+Customer_026,1,1,32960.0,4.12,2026-05-05,1.0,32960.0,25,Low Frequency Customer
+Customer_027,1,1,31955.0,4.565,2026-04-04,1.0,31955.0,56,Low Frequency Customer
+Customer_028,5,4,85330.0,15.19,2026-05-23,0.8,21332.5,7,Regular Customer
+Customer_029,5,4,86590.0,15.370000000000001,2026-05-25,0.8,21647.5,5,Regular Customer
+Customer_030,5,2,43400.0,15.2,2026-05-25,0.4,21700.0,5,Regular Customer
+Customer_031,1,0,0.0,0.0,2026-05-13,0.0,,17,Low Frequency Customer
+Customer_032,2,1,45960.0,9.7,2026-05-30,0.5,45960.0,0,Low Frequency Customer
+Customer_033,1,0,0.0,16.045,2026-05-21,0.0,,9,Low Frequency Customer
+Customer_034,1,0,0.0,3.0,2026-04-04,0.0,,56,Low Frequency Customer
+Customer_035,7,2,68355.0,31.605,2026-05-26,0.2857142857142857,34177.5,4,Regular Customer
+Customer_036,7,7,185045.0,26.435,2026-05-22,1.0,26435.0,8,Premium Customer
+Customer_037,4,4,171430.0,24.490000000000002,2026-05-26,1.0,42857.5,4,Premium Customer
+Customer_038,1,1,37870.0,5.41,2026-04-30,1.0,37870.0,30,Low Frequency Customer
+Customer_039,1,1,33960.0,4.245,2026-04-27,1.0,33960.0,33,Low Frequency Customer
+Customer_040,1,0,0.0,0.0,2026-05-13,0.0,,17,Low Frequency Customer
+Customer_041,1,1,26915.0,3.845,2026-04-17,1.0,26915.0,43,Low Frequency Customer
+Customer_042,1,0,0.0,0.0,2026-05-20,0.0,,10,Low Frequency Customer
+Customer_043,2,2,42000.0,6.0,2026-05-08,1.0,21000.0,22,Low Frequency Customer
+Customer_044,2,2,47460.0,6.78,2026-05-25,1.0,23730.0,5,Low Frequency Customer
+Customer_045,1,1,21000.0,3.0,2026-04-02,1.0,21000.0,58,Low Frequency Customer
+Customer_046,9,7,466630.0,30.105,2026-05-23,0.7777777777777778,66661.42857142857,7,Premium Customer
+Customer_047,3,3,111825.0,15.975,2026-05-11,1.0,37275.0,19,High-Value Occasional
+Customer_048,2,2,83115.0,9.235,2026-05-23,1.0,41557.5,7,Low Frequency Customer
+Customer_049,4,4,88360.0,12.19,2026-05-12,1.0,22090.0,18,Regular Customer
+Customer_050,1,0,0.0,0.0,2026-05-15,0.0,,15,Low Frequency Customer
+Customer_051,1,0,0.0,0.0,2026-05-18,0.0,,12,Low Frequency Customer
+Customer_052,1,1,29480.0,3.685,2026-05-04,1.0,29480.0,26,Low Frequency Customer
+Customer_053,1,1,17955.0,1.995,2026-04-17,1.0,17955.0,43,Low Frequency Customer
+Customer_054,1,1,21000.0,3.0,2026-05-18,1.0,21000.0,12,Low Frequency Customer
+Customer_055,2,1,25950.0,8.24,2026-05-11,0.5,25950.0,19,Low Frequency Customer
+Customer_056,1,0,0.0,0.0,2026-05-13,0.0,,17,Low Frequency Customer
+Customer_057,1,1,40470.0,6.745,2026-04-29,1.0,40470.0,31,Low Frequency Customer
+Customer_058,2,1,21000.0,6.0,2026-04-16,0.5,21000.0,44,Low Frequency Customer
+Customer_059,9,5,88965.0,30.87,2026-05-26,0.5555555555555556,17793.0,4,Regular Customer
+Customer_060,6,3,149070.0,18.83,2026-05-26,0.5,49690.0,4,Premium Customer
+Customer_061,1,1,21000.0,3.0,2026-05-12,1.0,21000.0,18,Low Frequency Customer
+Customer_062,1,1,27000.0,3.0,2026-05-23,1.0,27000.0,7,Low Frequency Customer
+Customer_063,1,1,24000.0,3.0,2026-05-07,1.0,24000.0,23,Low Frequency Customer
+Customer_064,2,1,40845.0,11.625,2026-05-02,0.5,40845.0,28,Low Frequency Customer
+Customer_065,1,0,0.0,0.0,2026-05-07,0.0,,23,Low Frequency Customer
+Customer_066,2,2,83160.0,10.395,2026-05-26,1.0,41580.0,4,Low Frequency Customer
+Customer_067,6,5,107895.0,21.345,2026-05-25,0.8333333333333334,21579.0,5,Premium Customer
+Customer_068,2,0,0.0,0.0,2026-05-20,0.0,,10,Low Frequency Customer
+Customer_069,1,0,0.0,4.695,2026-04-30,0.0,,30,Low Frequency Customer
+Customer_070,2,2,103365.0,11.485,2026-05-11,1.0,51682.5,19,High-Value Occasional
+Customer_071,10,5,356595.0,75.325,2026-05-21,0.5,71319.0,9,Premium Customer
+Customer_072,1,0,0.0,0.0,2026-05-18,0.0,,12,Low Frequency Customer
+Customer_073,3,3,87030.0,9.67,2026-05-08,1.0,29010.0,22,Regular Customer
+Customer_074,4,4,106110.0,17.685,2026-05-18,1.0,26527.5,12,Premium Customer
+Customer_075,4,4,180240.0,22.53,2026-05-19,1.0,45060.0,11,Premium Customer
+Customer_076,1,0,0.0,5.105,2026-04-06,0.0,,54,Low Frequency Customer
+Customer_077,1,0,0.0,0.0,2026-05-18,0.0,,12,Low Frequency Customer
+Customer_078,3,3,72540.0,11.47,2026-05-19,1.0,24180.0,11,Regular Customer
+Customer_079,3,2,75635.0,10.805,2026-04-25,0.6666666666666666,37817.5,35,Regular Customer
+Customer_080,1,0,0.0,0.0,2026-05-16,0.0,,14,Low Frequency Customer
+Customer_081,1,0,0.0,0.0,2026-05-18,0.0,,12,Low Frequency Customer
+Customer_082,2,0,0.0,6.55,2026-05-22,0.0,,8,Low Frequency Customer
+Customer_083,1,0,0.0,3.0,2026-04-22,0.0,,38,Low Frequency Customer
+Customer_084,3,3,65700.0,10.45,2026-05-26,1.0,21900.0,4,Regular Customer
+Customer_085,9,4,147055.0,29.284999999999997,2026-05-26,0.4444444444444444,36763.75,4,Premium Customer
+Customer_086,6,4,168035.0,30.55,2026-05-22,0.6666666666666666,42008.75,8,Premium Customer
+Customer_087,3,3,116015.0,15.73,2026-05-09,1.0,38671.666666666664,21,High-Value Occasional
+Customer_088,1,0,0.0,9.125,2026-05-20,0.0,,10,Low Frequency Customer
+Customer_089,2,2,37410.0,6.234999999999999,2026-05-20,1.0,18705.0,10,Low Frequency Customer
+Customer_090,3,3,144725.0,20.675,2026-05-22,1.0,48241.666666666664,8,High-Value Occasional
+Customer_091,6,5,108535.0,15.504999999999999,2026-05-16,0.8333333333333334,21707.0,14,Premium Customer
+Customer_092,2,2,51660.0,8.61,2026-05-22,1.0,25830.0,8,Low Frequency Customer
+Customer_093,1,0,0.0,0.0,2026-05-09,0.0,,21,Low Frequency Customer
+Customer_094,1,0,0.0,0.0,2026-04-04,0.0,,56,Low Frequency Customer
+Customer_095,6,1,21210.0,19.455,2026-05-30,0.16666666666666666,21210.0,0,Regular Customer
+Customer_096,1,1,83880.0,9.32,2026-04-16,1.0,83880.0,44,Low Frequency Customer
+Customer_097,2,2,50480.0,7.265,2026-04-28,1.0,25240.0,32,Low Frequency Customer
+Customer_098,3,2,58730.0,14.345,2026-05-26,0.6666666666666666,29365.0,4,Regular Customer
+Customer_099,1,0,0.0,0.0,2026-05-15,0.0,,15,Low Frequency Customer
+Customer_100,4,3,105700.0,19.98,2026-05-05,0.75,35233.333333333336,25,Premium Customer
+Customer_101,8,6,217800.0,31.825,2026-05-25,0.75,36300.0,5,Premium Customer
+Customer_102,1,1,33110.0,4.73,2026-05-18,1.0,33110.0,12,Low Frequency Customer
+Customer_103,1,0,0.0,0.0,2026-05-13,0.0,,17,Low Frequency Customer
+Customer_104,1,0,0.0,3.75,2026-04-01,0.0,,59,Low Frequency Customer
+Customer_105,1,1,22295.0,3.185,2026-05-04,1.0,22295.0,26,Low Frequency Customer
+Customer_106,1,0,0.0,3.0,2026-04-04,0.0,,56,Low Frequency Customer
+Customer_107,2,0,0.0,9.305,2026-05-13,0.0,,17,Low Frequency Customer
+Customer_108,1,0,0.0,0.0,2026-05-18,0.0,,12,Low Frequency Customer
+Customer_109,11,6,341425.0,83.58500000000001,2026-05-29,0.5454545454545454,56904.166666666664,1,Premium Customer
+Customer_110,1,0,0.0,0.0,2026-05-18,0.0,,12,Low Frequency Customer
+Customer_111,1,1,27000.0,3.0,2026-05-08,1.0,27000.0,22,Low Frequency Customer
+Customer_112,3,3,143470.0,21.630000000000003,2026-05-23,1.0,47823.333333333336,7,High-Value Occasional
+Customer_113,1,1,21000.0,3.0,2026-05-08,1.0,21000.0,22,Low Frequency Customer
+Customer_114,1,1,62800.0,7.85,2026-05-18,1.0,62800.0,12,Low Frequency Customer
+Customer_115,3,3,91630.0,13.09,2026-05-29,1.0,30543.333333333332,1,Regular Customer
+Customer_116,1,1,29960.0,4.28,2026-04-25,1.0,29960.0,35,Low Frequency Customer
+Customer_117,4,4,84000.0,12.0,2026-05-25,1.0,21000.0,5,Regular Customer
+Customer_118,3,1,58590.0,9.765,2026-05-09,0.3333333333333333,58590.0,21,Regular Customer
+Customer_119,1,1,18000.0,3.0,2026-04-04,1.0,18000.0,56,Low Frequency Customer
+Customer_120,2,2,57150.0,9.525,2026-04-24,1.0,28575.0,36,Low Frequency Customer
+Customer_121,4,4,117905.0,14.845,2026-05-16,1.0,29476.25,14,Premium Customer
+Customer_122,5,3,108540.0,29.005,2026-05-30,0.6,36180.0,0,Premium Customer
+Customer_123,3,2,64120.0,11.015,2026-05-18,0.6666666666666666,32060.0,12,Regular Customer
+Customer_124,1,1,80000.0,0.0,2026-05-23,1.0,80000.0,7,Low Frequency Customer
+Customer_125,1,0,0.0,0.0,2026-04-28,0.0,,32,Low Frequency Customer
+Customer_126,2,1,38360.0,11.29,2026-05-29,0.5,38360.0,1,Low Frequency Customer
+Customer_127,2,0,0.0,0.0,2026-05-19,0.0,,11,Low Frequency Customer
+Customer_128,2,1,32760.0,4.68,2026-04-18,0.5,32760.0,42,Low Frequency Customer
+Customer_129,1,0,0.0,5.81,2026-04-04,0.0,,56,Low Frequency Customer
+Customer_130,4,2,63420.0,15.63,2026-05-22,0.5,31710.0,8,Regular Customer
+Customer_131,2,2,42665.0,6.1850000000000005,2026-05-12,1.0,21332.5,18,Low Frequency Customer
+Customer_132,1,1,33015.0,6.145,2026-05-26,1.0,33015.0,4,Low Frequency Customer
+Customer_133,2,1,46410.0,6.63,2026-05-30,0.5,46410.0,0,Low Frequency Customer
+Customer_134,3,2,157815.0,20.215,2026-05-25,0.6666666666666666,78907.5,5,High-Value Occasional
+Customer_135,1,1,27000.0,3.0,2026-04-21,1.0,27000.0,39,Low Frequency Customer
+Customer_136,1,0,0.0,0.0,2026-05-21,0.0,,9,Low Frequency Customer
+Customer_137,3,1,26400.0,12.46,2026-05-20,0.3333333333333333,26400.0,10,Regular Customer
+Customer_138,7,6,240265.0,37.575,2026-05-25,0.8571428571428571,40044.166666666664,5,Premium Customer
+Customer_139,5,3,75950.0,10.85,2026-05-02,0.6,25316.666666666668,28,Regular Customer
+Customer_140,1,0,0.0,0.0,2026-05-18,0.0,,12,Low Frequency Customer
+Customer_141,1,0,0.0,0.0,2026-04-08,0.0,,52,Low Frequency Customer
+Customer_142,5,3,68075.0,17.4,2026-05-23,0.6,22691.666666666668,7,Regular Customer
+Customer_143,7,4,106645.0,24.175,2026-05-26,0.5714285714285714,26661.25,4,Premium Customer
+Customer_144,2,2,54760.0,8.435,2026-05-23,1.0,27380.0,7,Low Frequency Customer
+Customer_145,6,2,104040.0,23.455,2026-05-21,0.3333333333333333,52020.0,9,Premium Customer
+Customer_146,1,1,32885.0,4.765,2026-05-11,1.0,32885.0,19,Low Frequency Customer
+Customer_147,7,3,221235.0,18.56,2026-05-26,0.42857142857142855,73745.0,4,Premium Customer
+Customer_148,1,1,38790.0,4.31,2026-04-20,1.0,38790.0,40,Low Frequency Customer
+Customer_149,4,4,124890.0,20.815,2026-05-22,1.0,31222.5,8,Premium Customer
+Customer_150,1,1,21000.0,3.0,2026-05-22,1.0,21000.0,8,Low Frequency Customer
+Customer_151,1,0,0.0,0.0,2026-04-18,0.0,,42,Low Frequency Customer
+Customer_152,5,3,192950.0,28.515,2026-05-12,0.6,64316.666666666664,18,Premium Customer
+Customer_153,13,8,337925.0,91.015,2026-05-29,0.6153846153846154,42240.625,1,Premium Customer
+Customer_154,3,3,91805.0,13.115,2026-05-12,1.0,30601.666666666668,18,High-Value Occasional
+Customer_155,1,0,0.0,0.0,2026-05-20,0.0,,10,Low Frequency Customer

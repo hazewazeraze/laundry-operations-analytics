@@ -1,0 +1,16 @@
+# Raw export contains real customer names — never publish
+data/raw/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Streamlit secrets
+.streamlit/secrets.toml
+
+# OS
+Thumbs.db
+desktop.ini
+.DS_Store

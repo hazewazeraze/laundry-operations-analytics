@@ -1,0 +1,5 @@
+service_type,orders,mean_days,median_days,p90_days
+PCS,327,3.18,3.0,4.4
+PCL,60,3.47,4.0,5.0
+PS,16,3.81,4.0,4.5
+SATUAN,42,4.05,4.0,5.0

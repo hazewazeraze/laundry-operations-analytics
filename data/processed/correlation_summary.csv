@@ -1,0 +1,3 @@
+Relationship,spearman_rho,n_customers
+orders ~ total_revenue,0.842,155
+orders ~ average_order_value,0.127,113
