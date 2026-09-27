@@ -13,12 +13,7 @@ measurable = stat(sla, "Orders with SLA measurable")
 peak_backlog = float(d["backlog"]["cumulative_backlog"].max())
 
 PROMISE_ORDER = ["10 JAM", "1 HARI", "2 HARI", "3 HARI", "4 HARI", "5 HARI"]
-prom = (
-    d["sla_promise"]
-    .set_index("service_detail")
-    .reindex(PROMISE_ORDER)
-    .reset_index()
-)
+prom = d["sla_promise"].set_index("service_detail").reindex(PROMISE_ORDER).reset_index()
 prom_mix = prom.assign(share=lambda t: t["orders"] / t["orders"].sum() * 100)
 
 with st.container(horizontal=True):
@@ -72,9 +67,7 @@ with col1:
             ),
             width="stretch",
         )
-        st.caption(
-            "286 of 445 measurable orders — 64% — choose the 3-day promise."
-        )
+        st.caption("286 of 445 measurable orders — 64% — choose the 3-day promise.")
 
 with col2:
     with st.container(border=True):
@@ -105,14 +98,12 @@ if "Orders crossing a Sunday" in sens["Metric"].values:
 
     with st.container(border=True):
         st.subheader("Same orders, two clocks: 75.5% vs 38%")
-        st.markdown(
-            f"""
+        st.markdown(f"""
 - A promise like **3 HARI means three working days**. Order in on Thursday → due Monday: Saturday counts, Sunday does not.
 - The raw calendar count punishes every closed Sunday — **{sunday_orders:.0f} of {measurable:.0f} measurable orders cross one** — and reads **{cal_rate:.1f}%**.
 - Counted the way the shop actually runs (Mon–Sat): **{open_rate:.1f}% on-time**. Add one working day of slack and it would be {open_plus1:.1f}% — so {open_rate:.1f}% is strict, not soft.
 - Almost nothing records an early finish (5 of {measurable:.0f}): completion is logged at close-out, so genuinely fast jobs rarely reach the record.
-"""
-        )
+""")
         st.caption(
             "Both readings computed in 02_exploratory_analysis.py and stored in "
             "data/processed/sla_sensitivity_report.csv."

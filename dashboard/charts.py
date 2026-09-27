@@ -8,8 +8,8 @@ import altair as alt
 import pandas as pd
 import streamlit as st
 
-PRIMARY = "#4C9BE8"   # dashboard blue
-ACCENT = "#D95F4F"    # emphasis / weak-link red
+PRIMARY = "#4C9BE8"  # dashboard blue
+ACCENT = "#D95F4F"  # emphasis / weak-link red
 POSITIVE = "#3ECF8E"  # matches the Supported verdict
 HIGHLIGHT = "#FFC94F"  # matches the Inconclusive verdict
 MUTED = "#9AA4B2"
@@ -109,9 +109,7 @@ def bars_h(
         keys = [k for k in SEGMENT_COLORS if k in set(data[color_field].unique())]
         color_enc = alt.Color(
             f"{color_field}:N",
-            scale=alt.Scale(
-                domain=keys, range=[SEGMENT_COLORS[k] for k in keys]
-            ),
+            scale=alt.Scale(domain=keys, range=[SEGMENT_COLORS[k] for k in keys]),
             legend=None,
         )
     else:

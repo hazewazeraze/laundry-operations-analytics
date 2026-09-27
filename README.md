@@ -1,6 +1,12 @@
 # Laundry Kampus Analytics
 
-> Analyzing customer value and operational reliability through transaction data.
+> Who the valuable customers are, where revenue goes missing, and why delivery promises slip — a two-month study of a campus laundry in Python.
+
+**What I found**
+
+- The top 20% of customers take **57.7%** of observed revenue, so keeping existing customers matters more than finding new ones.
+- Revenue is recorded on only **66.2%** of transactions — the biggest fixable problem is capture, not demand.
+- **75.5%** of orders are on time when promises are counted in working days, but the standard 3-day promise sits at **70.6%**, and busy days do not cause the delays.
 
 **Scope:** Laundry Kampus study case (anonymized) · **Period:** 1 April – 30 May 2026 · **Records:** 467 validated transactions · 155 identified customers
 **Stack:** Python · pandas · NumPy · Matplotlib · Streamlit · permutation and bootstrap statistics
@@ -12,7 +18,7 @@
 
 This project looks at two months of laundry transaction records to answer three questions: who the valuable customers are, how revenue is distributed across customers and services, and whether delivery promises are actually kept.
 
-The pipeline runs from data cleaning through exploratory analysis, customer segmentation, and statistical testing. Every number in this README can be reproduced by running the scripts in `notebooks/`.
+The pipeline runs from data cleaning through exploratory analysis, customer segmentation, and statistical testing. Every number in this README can be reproduced by running the scripts in `scripts/`.
 
 One caveat shapes everything else: revenue is only recorded on 66.2% of transactions. The analysis puts a number on that gap and labels every revenue figure as observed revenue instead of quietly assuming the data is complete.
 
@@ -72,7 +78,7 @@ Central question:
 
 ---
 
-## Data Preparation (`notebooks/01_data_preparation.py`)
+## Data Preparation (`scripts/01_data_preparation.py`)
 
 - Dropped blank rows and spreadsheet section-header rows (e.g. the `June 2026` label row).
 - Removed 1 exact duplicate on `(customer, dates, service, weight, revenue)`; near-duplicates were only flagged (`possible_duplicate`) to avoid deleting genuine repeat orders.
@@ -103,7 +109,7 @@ By category: `LAUNDRY PACKAGE` = Rp 10,356,730 (99.2%), `PER ITEM` = Rp 80,000 (
 ### Revenue data quality
 
 - Only **66.2%** of transactions record revenue; SATUAN/per-item orders record it on just 1 of 48 rows (2.1%).
-- **Estimated unrecorded revenue, based on observed transaction patterns:** roughly **Rp 3.1 million — about 30% of the observed Rp 10.44 million** (`revenue_gap_report.csv`). This is an estimate from per-service averages, not tracked lost revenue.
+- **Estimated unrecorded revenue:** roughly **Rp 3.1 million — about 30% of the observed Rp 10.44 million** (`revenue_gap_report.csv`). Each order that carries a weight is priced at its service's median revenue per kg; per-item orders carry no weight, so they sit outside this estimate and the real gap is probably larger. This is an estimate from observed averages, not tracked lost revenue.
 - Therefore every revenue figure in this project is labeled **observed revenue**. Conclusions are drawn from shares and rankings, which are robust to the gap, not from absolute totals.
 
 ### Demand Pattern
@@ -129,7 +135,7 @@ This is a real concentration pattern, but not a strict 80/20 rule — the CI say
 
 ### Observed Segments
 
-Customers were segmented on observed revenue and order frequency (quartile-based rules). These describe **observed transaction patterns in the two-month window — not lifetime customer value**:
+Customers were segmented on observed revenue and order frequency — top quartile on both measures for Premium, top quartile revenue for High-Value Occasional, at least three orders for Regular, and everyone else Low Frequency. These describe **observed transaction patterns in the two-month window — not lifetime customer value**:
 
 | Segment | Customers | Orders | Observed revenue (Rp) | Revenue share | Revenue / order (Rp) |
 |---|---:|---:|---:|---:|---:|
@@ -179,7 +185,7 @@ The Premium share is sensitive to revenue missingness, so segment sizes and shar
 | Average lateness (late orders only) | 1.29 open days |
 | Median turnaround | 4.0 days (calendar) |
 
-SLA is measured in **open days — Monday to Saturday, Sunday closed** — because promises like `3 HARI` are handling days. The raw calendar count reads only **38.0%**: 233 of the 445 measurable orders span at least one Sunday, and every closed day would be counted as lateness. With one open day of slack the rate would be 99.3%, so 75.5% is a strict reading, not a generous one (`sla_sensitivity_report.csv`). One caveat in the other direction: only 5 of 445 orders are recorded as finishing ahead of promise, so genuinely fast jobs barely reach the record either.
+SLA is measured in **open days — Monday to Saturday, Sunday closed** — because promises like `3 HARI` are handling days. The raw calendar count reads only **38.0%**: 233 of the 445 measurable orders span at least one Sunday, and every closed day would be counted as lateness. With one open day of slack the rate would be 99.3%, so 75.5% is a strict reading, not a generous one (`sla_sensitivity_report.csv`). One caveat in the other direction: only 6 of 445 orders are recorded as finishing ahead of promise (5 on a calendar-day count), so genuinely fast jobs barely reach the record either.
 
 ### On-time Rate by Promised Turnaround
 
@@ -191,6 +197,8 @@ SLA is measured in **open days — Monday to Saturday, Sunday closed** — becau
 | 3 HARI | 286 | 3.28 | 70.6% |
 | 4 HARI | 7 | 4.57 | 42.9% |
 | 5 HARI | 1 | 4.00 | 100% (n=1) |
+
+*The `10 JAM` row needs care: four of its seven orders finished the same day, and the other three are recorded 14 days later. With n=7 and dates rather than timestamps, that row is noise rather than a finding.*
 
 The weak point is still the **3 HARI promise — 286 orders, 64% of all measurable orders, 70.6% on-time**, against 93.2% for the 1-day promise. Reliability breaks down on the standard promise, not the rush ones.
 
@@ -289,7 +297,7 @@ Laundry Kampus Analytics/
 │       ├── revenue_*.csv                # service/category/gap revenue tables
 │       ├── sla_*.csv, turnaround_summary.csv, weekday_summary.csv
 │       └── data_quality_report.csv      # column-by-column coverage
-├── notebooks/
+├── scripts/
 │   ├── 01_data_preparation.py           # cleaning, features, quality flags
 │   ├── 02_exploratory_analysis.py       # revenue, SLA, weekday, backlog
 │   ├── 03_visualization.py              # chart outputs
@@ -303,6 +311,7 @@ Laundry Kampus Analytics/
 ├── dashboard/
 │   ├── streamlit_app.py                 # entry point (st.navigation, 5 pages)
 │   ├── data_loader.py                   # cached CSV loaders + shared helpers
+│   ├── charts.py                        # shared Altair chart builders
 │   └── app_pages/
 │       ├── overview.py                  # "What happened?"
 │       ├── revenue.py                   # "Where does revenue come from?"
@@ -319,9 +328,9 @@ Laundry Kampus Analytics/
 # 1. Dependencies
 pip install -r requirements.txt
 
-# 2. Run the pipeline in order (scripts use ../data paths — run from notebooks/)
-cd notebooks
-python 01_data_preparation.py
+# 2. Run the pipeline in order (scripts use ../data paths — run from scripts/)
+cd scripts
+python 01_data_preparation.py    # optional — needs data/raw/laundry_raw.csv, which is not published
 python 02_exploratory_analysis.py
 python 03_visualization.py
 python 04_customer_analysis.py

@@ -10,11 +10,7 @@ import os
 import numpy as np
 import pandas as pd
 
-
-pd.set_option(
-    "display.max_columns",
-    None
-)
+pd.set_option("display.max_columns", None)
 
 
 N_ITER = 5000
@@ -23,38 +19,22 @@ SEED = 42
 
 # Load data
 
-df = pd.read_csv(
-    "../data/processed/laundry_clean.csv"
-)
+df = pd.read_csv("../data/processed/laundry_clean.csv")
 
-df["order_date"] = pd.to_datetime(
-    df["order_date"]
-)
+df["order_date"] = pd.to_datetime(df["order_date"])
 
-df["completion_date"] = pd.to_datetime(
-    df["completion_date"]
-)
+df["completion_date"] = pd.to_datetime(df["completion_date"])
 
 
-identified = df[
-    df["customer_id"]
-    !=
-    "Customer_UNKNOWN"
-].copy()
+identified = df[df["customer_id"] != "Customer_UNKNOWN"].copy()
 
 
 # Helpers
 
+
 def spearman_rho(x, y):
 
-    return float(
-        pd.Series(x)
-        .rank()
-        .corr(
-            pd.Series(y)
-            .rank()
-        )
-    )
+    return float(pd.Series(x).rank().corr(pd.Series(y).rank()))
 
 
 def spearman_permutation(x, y, n_iter=N_ITER, seed=SEED):
@@ -94,34 +74,18 @@ def kw_permutation(values, labels, n_iter=N_ITER, seed=SEED):
 
     _, tie_counts = np.unique(values, return_counts=True)
 
-    tie_correction = 1 - (
-        np.sum(tie_counts ** 3 - tie_counts)
-        /
-        (n ** 3 - n)
-    )
+    tie_correction = 1 - (np.sum(tie_counts**3 - tie_counts) / (n**3 - n))
 
     if tie_correction <= 0:
         tie_correction = 1
 
     def h_stat(rank_sums):
 
-        h = (
-            12
-            /
-            (n * (n + 1))
-            * np.sum(rank_sums ** 2 / sizes)
-            -
-            3 * (n + 1)
-        )
+        h = 12 / (n * (n + 1)) * np.sum(rank_sums**2 / sizes) - 3 * (n + 1)
 
         return h / tie_correction
 
-    observed_sums = np.array(
-        [
-            ranks[codes == k].sum()
-            for k in range(len(unique))
-        ]
-    )
+    observed_sums = np.array([ranks[codes == k].sum() for k in range(len(unique))])
 
     observed = h_stat(observed_sums)
 
@@ -133,12 +97,7 @@ def kw_permutation(values, labels, n_iter=N_ITER, seed=SEED):
 
         permuted = rng.permutation(codes)
 
-        perm_sums = np.array(
-            [
-                ranks[permuted == k].sum()
-                for k in range(len(unique))
-            ]
-        )
+        perm_sums = np.array([ranks[permuted == k].sum() for k in range(len(unique))])
 
         if h_stat(perm_sums) >= observed:
             extreme += 1
@@ -148,9 +107,7 @@ def kw_permutation(values, labels, n_iter=N_ITER, seed=SEED):
 
 def gini(values):
 
-    values = np.sort(
-        np.asarray(values, dtype=float)
-    )
+    values = np.sort(np.asarray(values, dtype=float))
 
     n = len(values)
 
@@ -159,14 +116,7 @@ def gini(values):
 
     index = np.arange(1, n + 1)
 
-    return float(
-        (
-            (2 * index - n - 1)
-            @ values
-        )
-        /
-        (n * values.sum())
-    )
+    return float(((2 * index - n - 1) @ values) / (n * values.sum()))
 
 
 results = []
@@ -174,29 +124,18 @@ results = []
 
 # H1: revenue concentration
 
-customer_revenue = (
-    identified
-    .groupby("customer_id")["total_revenue"]
-    .sum()
-    .values
-)
+customer_revenue = identified.groupby("customer_id")["total_revenue"].sum().values
 
 n_customers = len(customer_revenue)
 
-top20_n = int(
-    np.ceil(0.2 * n_customers)
-)
+top20_n = int(np.ceil(0.2 * n_customers))
 
 
 def top_share(sample):
 
     ordered = np.sort(sample)[::-1]
 
-    return (
-        ordered[:top20_n].sum()
-        /
-        ordered.sum()
-    )
+    return ordered[:top20_n].sum() / ordered.sum()
 
 
 observed_share = top_share(customer_revenue)
@@ -289,11 +228,7 @@ results.append(
         "statistic": round(rho_aov, 3),
         "p_value": round(p_aov, 4),
         "ci_95": "",
-        "verdict": (
-            "Supported"
-            if p_aov < 0.05 and rho_aov >= 0.3
-            else "Rejected"
-        ),
+        "verdict": ("Supported" if p_aov < 0.05 and rho_aov >= 0.3 else "Rejected"),
         "notes": "frequency does NOT raise value per order" if rho_aov < 0.3 else "",
     }
 )
@@ -306,22 +241,13 @@ print(f"  orders ~ AOV     : rho={rho_aov:.3f}  p={p_aov:.4f}")
 
 # H3: volume vs revenue vs turnaround rank
 
-rank_volume = (
-    df["service_type"]
-    .value_counts()
-)
+rank_volume = df["service_type"].value_counts()
 
 rank_revenue = (
-    df.groupby("service_type")["total_revenue"]
-    .sum()
-    .sort_values(ascending=False)
+    df.groupby("service_type")["total_revenue"].sum().sort_values(ascending=False)
 )
 
-rank_turnaround = (
-    df.groupby("service_type")["service_days"]
-    .mean()
-    .sort_values()
-)
+rank_turnaround = df.groupby("service_type")["service_days"].mean().sort_values()
 
 rank_table = pd.DataFrame(
     {
@@ -335,8 +261,7 @@ top_service = rank_volume.index[0]
 
 top_best_at_all = (
     rank_revenue.rank(ascending=False)[top_service] == 1
-    and
-    rank_turnaround.rank()[top_service] == 1
+    and rank_turnaround.rank()[top_service] == 1
 )
 
 results.append(
@@ -358,11 +283,7 @@ print(rank_table)
 
 # H4: turnaround by service
 
-turnaround_data = df[
-    df["service_days"].notna()
-    &
-    df["service_type"].notna()
-]
+turnaround_data = df[df["service_days"].notna() & df["service_type"].notna()]
 
 h4_stat, h4_p = kw_permutation(
     turnaround_data["service_days"].values,
@@ -370,9 +291,7 @@ h4_stat, h4_p = kw_permutation(
 )
 
 
-late_data = turnaround_data[
-    turnaround_data["days_late"].notna()
-]
+late_data = turnaround_data[turnaround_data["days_late"].notna()]
 
 if len(late_data) > 50:
 
@@ -406,9 +325,7 @@ results.append(
         "p_value": round(h4b_p, 4),
         "ci_95": "",
         "verdict": (
-            "Supported"
-            if np.nan_to_num(h4b_p, nan=1) < 0.05
-            else "Inconclusive"
+            "Supported" if np.nan_to_num(h4b_p, nan=1) < 0.05 else "Inconclusive"
         ),
         "notes": "controls for promised turnaround",
     }
@@ -433,11 +350,7 @@ weekday_order = [
 ]
 
 observed_counts = (
-    df["order_day"]
-    .value_counts()
-    .reindex(weekday_order)
-    .fillna(0)
-    .astype(int)
+    df["order_day"].value_counts().reindex(weekday_order).fillna(0).astype(int)
 )
 
 date_range = pd.date_range(
@@ -447,36 +360,20 @@ date_range = pd.date_range(
 )
 
 exposure = (
-    pd.Series(date_range.day_name())
-    .value_counts()
-    .reindex(weekday_order)
-    .fillna(0)
+    pd.Series(date_range.day_name()).value_counts().reindex(weekday_order).fillna(0)
 )
 
 open_days = weekday_order[:-1]
 
 expected = (
-    observed_counts[open_days].sum()
-    *
-    exposure[open_days]
-    /
-    exposure[open_days].sum()
+    observed_counts[open_days].sum() * exposure[open_days] / exposure[open_days].sum()
 ).values
 
 observed_open = observed_counts[open_days].values
 
-chi2 = float(
-    np.sum(
-        (observed_open - expected) ** 2
-        / expected
-    )
-)
+chi2 = float(np.sum((observed_open - expected) ** 2 / expected))
 
-probs = (
-    exposure[open_days]
-    /
-    exposure[open_days].sum()
-).values
+probs = (exposure[open_days] / exposure[open_days].sum()).values
 
 rng = np.random.default_rng(SEED)
 
@@ -487,15 +384,10 @@ sims = rng.multinomial(
 )
 
 sim_chi2 = (
-    (sims - observed_open.sum() * probs) ** 2
-    / (observed_open.sum() * probs)
+    (sims - observed_open.sum() * probs) ** 2 / (observed_open.sum() * probs)
 ).sum(axis=1)
 
-h5_p = float(
-    (sim_chi2 >= chi2).sum()
-    +
-    1
-) / float(len(sim_chi2) + 1)
+h5_p = float((sim_chi2 >= chi2).sum() + 1) / float(len(sim_chi2) + 1)
 
 results.append(
     {
@@ -516,15 +408,9 @@ print(f"  chi2 = {chi2:.2f}   p = {h5_p:.4f}")
 
 # H6: bottleneck
 
-orders_per_day = (
-    df.groupby("order_date")
-    .size()
-)
+orders_per_day = df.groupby("order_date").size()
 
-completions_per_day = (
-    df.groupby("completion_date")
-    .size()
-)
+completions_per_day = df.groupby("completion_date").size()
 
 all_days = pd.date_range(
     df["order_date"].min(),
@@ -539,30 +425,16 @@ backlog = pd.DataFrame(
     }
 )
 
-backlog["net"] = (
-    backlog["orders"]
-    -
-    backlog["completions"]
-)
+backlog["net"] = backlog["orders"] - backlog["completions"]
 
-backlog["cumulative_backlog"] = (
-    backlog["net"]
-    .cumsum()
-)
+backlog["cumulative_backlog"] = backlog["net"].cumsum()
 
 
 intake_by_day = df.groupby("order_date").size()
 
-df["intake_day_volume"] = (
-    df["order_date"]
-    .map(intake_by_day)
-)
+df["intake_day_volume"] = df["order_date"].map(intake_by_day)
 
-latency_data = df[
-    df["days_late"].notna()
-    &
-    df["intake_day_volume"].notna()
-].copy()
+latency_data = df[df["days_late"].notna() & df["intake_day_volume"].notna()].copy()
 
 latency_data["intake_bucket"] = pd.qcut(
     latency_data["intake_day_volume"],
@@ -577,8 +449,7 @@ h6_stat, h6_p = kw_permutation(
 
 
 bucket_summary = (
-    latency_data
-    .groupby("intake_bucket", observed=True)
+    latency_data.groupby("intake_bucket", observed=True)
     .agg(
         orders=("no", "size"),
         mean_days_late=("days_late", "mean"),
@@ -604,8 +475,7 @@ print("\nH6: bottleneck")
 print(bucket_summary)
 print(f"  H={h6_stat:.2f}  p={h6_p:.4f}")
 print(
-    f"  peak cumulative backlog: "
-    f"{int(backlog['cumulative_backlog'].max())} orders"
+    f"  peak cumulative backlog: " f"{int(backlog['cumulative_backlog'].max())} orders"
 )
 print(
     f"  backlog end of period : "
@@ -617,10 +487,7 @@ print(
 
 output_folder = "../outputs/tables"
 
-os.makedirs(
-    output_folder,
-    exist_ok=True
-)
+os.makedirs(output_folder, exist_ok=True)
 
 results_df = pd.DataFrame(results)
 
@@ -629,13 +496,9 @@ results_df.to_csv(
     index=False,
 )
 
-backlog.to_csv(
-    f"{output_folder}/backlog_series.csv"
-)
+backlog.to_csv(f"{output_folder}/backlog_series.csv")
 
-rank_table.to_csv(
-    f"{output_folder}/service_rank_comparison.csv"
-)
+rank_table.to_csv(f"{output_folder}/service_rank_comparison.csv")
 
 
 print("\nHypothesis test results:")
@@ -647,10 +510,7 @@ print(
             "p_value",
             "verdict",
         ]
-    ]
-    .to_string(index=False)
+    ].to_string(index=False)
 )
 
-print(
-    "\nHypothesis testing completed. Files exported."
-)
+print("\nHypothesis testing completed. Files exported.")

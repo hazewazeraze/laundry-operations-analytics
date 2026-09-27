@@ -139,9 +139,7 @@ with st.container(border=True):
             "Statistic": hyp["statistic"].map(
                 lambda v: "—" if pd.isna(v) else f"{v:.4g}"
             ),
-            "p-value": hyp["p_value"].map(
-                lambda v: "—" if pd.isna(v) else f"{v:.4f}"
-            ),
+            "p-value": hyp["p_value"].map(lambda v: "—" if pd.isna(v) else f"{v:.4f}"),
             "95% CI": hyp["ci_95"].map(
                 lambda v: "—" if pd.isna(v) or not str(v).strip() else str(v)
             ),
@@ -151,17 +149,13 @@ with st.container(border=True):
     )
 
     VERDICT_COLORS = {
-        "Supported": (
-            "background-color: #3ecf8e; color: #053823; font-weight: 600;"
-        ),
+        "Supported": ("background-color: #3ecf8e; color: #053823; font-weight: 600;"),
         "Rejected": "background-color: #ff9a8c; color: #57130a; font-weight: 600;",
         "Inconclusive": (
             "background-color: #ffc94f; color: #4a3300; font-weight: 600;"
         ),
     }
-    styled = disp.style.map(
-        lambda v: VERDICT_COLORS.get(v, ""), subset=["Verdict"]
-    )
+    styled = disp.style.map(lambda v: VERDICT_COLORS.get(v, ""), subset=["Verdict"])
     st.dataframe(styled, hide_index=True, width="stretch")
     st.caption(
         "Permutation, bootstrap and Monte Carlo — no distribution assumptions. "
@@ -193,13 +187,11 @@ with st.container(border=True):
     )
 
 with st.expander("Limitations"):
-    st.markdown(
-        """
+    st.markdown("""
 - **Incomplete revenue.** Every financial figure is observed revenue; about 30% of transaction value is estimated to be unrecorded.
 - **Short window.** Two months (April–May 2026) — no seasonality, no lifetime-value claims.
 - **No timestamps.** SLA is counted in whole working days, not hours (promises such as 3 HARI are handling days; Sunday stays closed). The raw calendar count (38%) is kept only as a reference in `sla_sensitivity_report.csv`.
 - **Customer identity.** 20 transactions carry no name and sit outside customer-level analysis.
 - **Segment sensitivity.** Segment shares shift on the high-coverage subset (table above).
 - **No cost data.** `unit_cost` coverage is 0.6% — no margin analysis is possible.
-"""
-    )
+""")

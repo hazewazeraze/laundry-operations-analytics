@@ -73,14 +73,12 @@ with st.container(border=True):
 with st.container(border=True):
     st.subheader("What each segment means")
     s = segments.set_index("segment")
-    st.markdown(
-        f"""
+    st.markdown(f"""
 - **Premium Customer** — top quartile on **both** observed revenue and order frequency. Orders often and spends most: **{int(s.loc["Premium Customer", "customers"])} customers, {s.loc["Premium Customer", "revenue_percentage"]:.1f}% of observed revenue**. The core worth protecting.
 - **High-Value Occasional** — top-quartile revenue on low frequency. Few orders, fat tickets: **Rp {s.loc["High-Value Occasional", "revenue_per_order"]:,.0f} per order**, the highest rate of any segment.
 - **Regular Customer** — frequent but mid-ticket: **{int(s.loc["Regular Customer", "orders"])} orders at Rp {s.loc["Regular Customer", "revenue_per_order"]:,.0f} each**, {s.loc["Regular Customer", "revenue_percentage"]:.1f}% of revenue. The dependable middle.
 - **Low Frequency Customer** — occasional and small: **{int(s.loc["Low Frequency Customer", "customers"])} customers ({s.loc["Low Frequency Customer", "customer_percentage"]:.1f}%)** driving {s.loc["Low Frequency Customer", "revenue_percentage"]:.1f}% of revenue. Cheap to serve, low stakes.
-"""
-    )
+""")
     st.caption(
         "Quartile rules on two-month observed revenue and order count — "
         "behaviour inside this window, not a verdict on customer worth."
@@ -170,26 +168,30 @@ with st.container(border=True):
         )
 
 with st.expander("Top 10 customers by observed revenue"):
-    top = d["customers"].nlargest(10, "total_revenue")[
-        [
-            "customer_id",
-            "total_orders",
-            "total_revenue",
-            "average_order_value",
-            "recency_days",
-            "segment",
-            "revenue_coverage",
+    top = (
+        d["customers"]
+        .nlargest(10, "total_revenue")[
+            [
+                "customer_id",
+                "total_orders",
+                "total_revenue",
+                "average_order_value",
+                "recency_days",
+                "segment",
+                "revenue_coverage",
+            ]
         ]
-    ].rename(
-        columns={
-            "customer_id": "Customer",
-            "total_orders": "Orders",
-            "total_revenue": "Observed revenue (Rp)",
-            "average_order_value": "Revenue per order (Rp)",
-            "recency_days": "Recency (days)",
-            "segment": "Segment",
-            "revenue_coverage": "Revenue coverage",
-        }
+        .rename(
+            columns={
+                "customer_id": "Customer",
+                "total_orders": "Orders",
+                "total_revenue": "Observed revenue (Rp)",
+                "average_order_value": "Revenue per order (Rp)",
+                "recency_days": "Recency (days)",
+                "segment": "Segment",
+                "revenue_coverage": "Revenue coverage",
+            }
+        )
     )
     st.dataframe(
         top,

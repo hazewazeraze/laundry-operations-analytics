@@ -100,8 +100,8 @@ with st.container(border=True):
     )
 
 st.caption(
-    "SATUAN books revenue on just 2.1% of its orders — the 0.8% share below is "
-    "missing paperwork, not a small business."
+    "SATUAN books revenue on just 2.1% of its orders — its 0.8% share of "
+    "revenue is missing paperwork, not a small business."
 )
 
 with st.container(border=True):

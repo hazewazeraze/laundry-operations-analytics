@@ -1,6 +1,6 @@
 """Shared data loading for the dashboard.
 
-All summary tables are produced by the notebooks/ pipeline. Loaders are
+All summary tables are produced by the scripts/ pipeline. Loaders are
 cached with @st.cache_data so pages only pay the CSV read cost once.
 """
 
@@ -39,9 +39,7 @@ def load_all() -> dict[str, pd.DataFrame]:
         "concentration": pd.read_csv(PROCESSED / "concentration_summary.csv"),
         "correlation": pd.read_csv(PROCESSED / "correlation_summary.csv"),
         "sla": pd.read_csv(PROCESSED / "sla_summary.csv"),
-        "sla_sensitivity": pd.read_csv(
-            PROCESSED / "sla_sensitivity_report.csv"
-        ),
+        "sla_sensitivity": pd.read_csv(PROCESSED / "sla_sensitivity_report.csv"),
         "sla_promise": pd.read_csv(PROCESSED / "sla_by_promise_summary.csv"),
         "turnaround": pd.read_csv(PROCESSED / "turnaround_summary.csv"),
         "backlog": backlog,
