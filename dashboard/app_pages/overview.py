@@ -53,13 +53,14 @@ with st.container(horizontal=True):
         border=True,
     )
 
-st.info(
-    "Observed revenue concentrates in a smaller customer group (top 20% → 57.7%). "
-    "Delivery promises are kept 75.5% of the time when measured in open days "
-    "(the raw calendar count says 38% — it counts closed Sundays as lateness). "
-    "Revenue is recorded on 66.2% of transactions, so every financial figure is "
-    "observed revenue."
-)
+with st.container(border=True):
+    st.markdown(
+        "**Bottom line:** April–May in one line — Rp 10.44M observed on 467 "
+        "orders, the top 20% of customers take 57.7% of it, and only 66.2% of "
+        "transactions record revenue at all. Promises hold 75.5% of the time "
+        "when counted in working days; a raw calendar count would say 38% by "
+        "counting closed Sundays as lateness."
+    )
 
 col1, col2 = st.columns(2)
 
@@ -105,8 +106,8 @@ with st.container(border=True):
     st.altair_chart(bars + expected, width="stretch")
 
 st.caption(
-    "Monday +29.9% and Friday +27.3% above a flat expectation; Thursday −39.0%. "
-    "Sunday is excluded (closed)."
+    "Monday runs +29.9% over a flat week, Friday +27.3%, Thursday −39.0% — the "
+    "week has a clear shape. Sunday is closed, so it never enters the baseline."
 )
 st.caption(
     "Data funnel: 472 exported rows → 467 validated transactions → 447 identifiable "

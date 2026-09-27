@@ -31,10 +31,14 @@ with st.container(horizontal=True):
         border=True,
     )
 
-st.caption(
-    "Estimated unrecorded revenue is modeled from observed per-service averages "
-    "— it is not tracked lost revenue."
-)
+with st.container(border=True):
+    st.markdown(
+        "**Bottom line:** PCS alone carries 81.3% of observed revenue on 337 "
+        "orders — the story here is capture, not demand. Revenue is recorded on "
+        "66.2% of transactions, and about Rp 3.1M (roughly 30% of observed) "
+        "sits outside the books — modeled from observed averages, not tracked "
+        "losses."
+    )
 
 col1, col2 = st.columns(2)
 
@@ -87,8 +91,8 @@ with st.container(border=True):
     )
 
 st.caption(
-    "SATUAN (per-item) records revenue on 2.1% of orders — its 0.8% revenue share "
-    "is an artifact of missing capture, not of low business value."
+    "SATUAN books revenue on just 2.1% of its orders — the 0.8% share below is "
+    "missing paperwork, not a small business."
 )
 
 with st.container(border=True):
@@ -111,6 +115,10 @@ with st.container(border=True):
                 "Share of observed (%)", format="%.1f%%"
             ),
         },
+    )
+    st.caption(
+        "Modeled from observed per-service averages — an estimate of unrecorded "
+        "revenue, not tracked losses."
     )
 
 with st.container(border=True):

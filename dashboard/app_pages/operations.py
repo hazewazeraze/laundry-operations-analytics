@@ -15,7 +15,7 @@ with st.container(horizontal=True):
     st.metric(
         "On-time rate",
         f"{stat(sla, 'On-time rate (%)'):.1f}%",
-        help="Turnaround measured in open days (Monday–Saturday), Sunday closed.",
+        help="Turnaround measured in working days (Monday–Saturday), Sunday closed.",
         border=True,
     )
     st.metric(
@@ -26,7 +26,7 @@ with st.container(horizontal=True):
     st.metric(
         "Avg days late",
         f"{stat(sla, 'Average days late (late orders)'):.2f}",
-        help="Open days past the promise, late orders only.",
+        help="Working days past the promise, late orders only.",
         border=True,
     )
     st.metric(
@@ -37,44 +37,29 @@ with st.container(horizontal=True):
     )
     st.metric("Peak backlog", f"{peak_backlog:,.0f} orders", border=True)
 
-if "Orders crossing a Sunday" in sens["Metric"].values:
-    sunday_orders = stat(sens, "Orders crossing a Sunday")
-    cal_rate = stat(sens, "On-time rate calendar days (%)")
-    open_rate = stat(sens, "On-time rate open days (%)")
-    open_plus1 = stat(sens, "On-time rate open days +1 day (%)")
-
-    with st.container(border=True):
-        st.subheader("Why does a raw calendar count say 38%?")
-        st.markdown(
-            f"""
-- Promises such as **3 HARI** are handling days, and the shop is closed on Sundays. Counted in raw calendar days, every closed Sunday becomes lateness — **{sunday_orders:.0f} of {measurable:.0f} measurable orders span at least one Sunday**.
-- Measured in **open days (Monday–Saturday)**, on-time is **{open_rate:.1f}%**; the raw calendar count reads **{cal_rate:.1f}%**.
-- Add one open day of slack and the rate would be {open_plus1:.1f}% — so {open_rate:.1f}% is a strict reading, not a generous one.
-- Almost no order is recorded as finishing ahead of its promise (5 of 445), so genuinely fast jobs barely reach the record either.
-"""
-        )
-        st.caption(
-            "Both readings are computed in 02_exploratory_analysis.py and stored in "
-            "data/processed/sla_sensitivity_report.csv."
-        )
-
-st.info(
-    "The weak point is still the standard 3-day promise: 286 orders (64% of "
-    "measurable orders) at 70.6% on-time. The 1-day promise holds at 93.2%. "
-    "Daily intake volume does not predict lateness."
-)
+with st.container(border=True):
+    st.markdown(
+        "**Bottom line:** 75.5% of measurable orders land on time in working days — "
+        "but the standard 3-day promise (286 orders, 64% of the total) sits at 70.6% "
+        "against 93.2% for 1-day work. Volume is not the culprit: backlog peaked at "
+        "30 open orders and heavy intake days do not predict lateness."
+    )
 
 col1, col2 = st.columns(2)
 
 with col1:
     with st.container(border=True):
-        st.subheader("On-time rate by promised turnaround")
+        st.subheader("On-time rate by promise")
         st.bar_chart(
             d["sla_promise"],
             x="service_detail",
             y="on_time_pct",
             sort=False,
             y_label="On-time (%)",
+        )
+        st.caption(
+            "Short promises hold (1 HARI: 93.2%). The weak link is the one most "
+            "customers pick."
         )
 
 with col2:
@@ -104,9 +89,29 @@ with col2:
             },
         )
         st.caption(
-            "Turnaround here is calendar days. Differences between services are "
-            "largely explained by their mix of promised turnaround (see Data "
-            "quality page)."
+            "Calendar days. Services look different mainly because they carry "
+            "different promises — not different speed."
+        )
+
+if "Orders crossing a Sunday" in sens["Metric"].values:
+    sunday_orders = stat(sens, "Orders crossing a Sunday")
+    cal_rate = stat(sens, "On-time rate calendar days (%)")
+    open_rate = stat(sens, "On-time rate open days (%)")
+    open_plus1 = stat(sens, "On-time rate open days +1 day (%)")
+
+    with st.container(border=True):
+        st.subheader("Same orders, two clocks: 75.5% vs 38%")
+        st.markdown(
+            f"""
+- A promise like **3 HARI means three working days**. Order in on Thursday → due Monday: Saturday counts, Sunday does not.
+- The raw calendar count punishes every closed Sunday — **{sunday_orders:.0f} of {measurable:.0f} measurable orders cross one** — and reads **{cal_rate:.1f}%**.
+- Counted the way the shop actually runs (Mon–Sat): **{open_rate:.1f}% on-time**. Add one working day of slack and it would be {open_plus1:.1f}% — so {open_rate:.1f}% is strict, not soft.
+- Almost nothing records an early finish (5 of {measurable:.0f}): completion is logged at close-out, so genuinely fast jobs rarely reach the record.
+"""
+        )
+        st.caption(
+            "Both readings computed in 02_exploratory_analysis.py and stored in "
+            "data/processed/sla_sensitivity_report.csv."
         )
 
 with st.container(border=True):
@@ -119,6 +124,6 @@ with st.container(border=True):
     )
 
 st.caption(
-    "Backlog peaked at 30 open orders; lateness is structural to the promise "
+    "Backlog peaked at 30 open orders. Lateness is structural to the promise "
     "design, not to daily volume spikes."
 )

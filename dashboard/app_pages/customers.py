@@ -26,6 +26,14 @@ with st.container(horizontal=True):
     st.metric("Repeat customer revenue share", f"{repeat_share:.1f}%", border=True)
 
 with st.container(border=True):
+    st.markdown(
+        "**Bottom line:** frequency buys volume, not price. The 8 High-Value "
+        "Occasional customers average Rp 43,426 an order — 2.7× a Regular — "
+        "while the 31 Premium customers carry 55.9% of observed revenue. "
+        "In this dataset, keeping the top tier beats chasing new names."
+    )
+
+with st.container(border=True):
     st.subheader("Observed segments")
     st.dataframe(
         segments.rename(
@@ -57,7 +65,24 @@ with st.container(border=True):
     )
     st.caption(
         "Observed transaction patterns in the two-month window — not lifetime "
-        "customer value. Segment revenue covers identified-customer orders only."
+        "value. Segment revenue covers named-customer orders only "
+        "(Rp 10,170,825 of the Rp 10,436,730 observed total)."
+    )
+
+with st.container(border=True):
+    st.subheader("What each segment means")
+    s = segments.set_index("segment")
+    st.markdown(
+        f"""
+- **Premium Customer** — top quartile on **both** observed revenue and order frequency. Orders often and spends most: **{int(s.loc["Premium Customer", "customers"])} customers, {s.loc["Premium Customer", "revenue_percentage"]:.1f}% of observed revenue**. The core worth protecting.
+- **High-Value Occasional** — top-quartile revenue on low frequency. Few orders, fat tickets: **Rp {s.loc["High-Value Occasional", "revenue_per_order"]:,.0f} per order**, the highest rate of any segment.
+- **Regular Customer** — frequent but mid-ticket: **{int(s.loc["Regular Customer", "orders"])} orders at Rp {s.loc["Regular Customer", "revenue_per_order"]:,.0f} each**, {s.loc["Regular Customer", "revenue_percentage"]:.1f}% of revenue. The dependable middle.
+- **Low Frequency Customer** — occasional and small: **{int(s.loc["Low Frequency Customer", "customers"])} customers ({s.loc["Low Frequency Customer", "customer_percentage"]:.1f}%)** driving {s.loc["Low Frequency Customer", "revenue_percentage"]:.1f}% of revenue. Cheap to serve, low stakes.
+"""
+    )
+    st.caption(
+        "Quartile rules on two-month observed revenue and order count — "
+        "behaviour inside this window, not a verdict on customer worth."
     )
 
 col1, col2 = st.columns(2)
@@ -111,6 +136,10 @@ with st.container(border=True):
                     "On-time (%)", format="%.1f%%"
                 ),
             },
+        )
+        st.caption(
+            "High-Value Occasional also keeps its promises best (86.4%, n=22); "
+            "the other three segments sit within a few points of each other."
         )
 
     with col_b:
