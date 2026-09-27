@@ -12,35 +12,35 @@ estimated_gap = float(gap["estimated_unrecorded_revenue"].sum())
 observed = stat(kpi, "Total Revenue (observed)")
 
 with st.container(horizontal=True):
-    st.metric("Observed revenue", rp(observed), border=True)
+    st.metric("Pendapatan (observed)", rp(observed), border=True)
     st.metric(
-        "Revenue coverage",
+        "Cakupan revenue",
         f"{stat(kpi, 'Revenue Coverage (%)'):.1f}%",
         border=True,
     )
     st.metric(
-        "Estimated unrecorded",
+        "Estimasi belum tercatat",
         rp(estimated_gap),
-        help=f"Modeled from observed per-service averages — about "
-        f"{estimated_gap / observed * 100:.0f}% of observed revenue.",
+        help=f"Dimodelkan dari rata-rata per layanan — sekitar "
+        f"{estimated_gap / observed * 100:.0f}% dari observed revenue.",
         border=True,
     )
     st.metric(
-        "Package services share",
+        "Share layanan package",
         f"{float(d['revenue_category']['revenue_share_pct'].max()):.1f}%",
         border=True,
     )
 
 st.caption(
-    "Estimated unrecorded revenue is modeled from observed per-service averages "
-    "— it is not tracked lost revenue."
+    "Estimasi pendapatan yang belum tercatat berasal dari model rata-rata per "
+    "layanan — bukan kerugian yang tercatat."
 )
 
 col1, col2 = st.columns(2)
 
 with col1:
     with st.container(border=True):
-        st.subheader("Observed revenue by service")
+        st.subheader("Pendapatan observed per layanan")
         st.bar_chart(
             d["revenue_service"],
             x="service_type",
@@ -51,7 +51,7 @@ with col1:
 
 with col2:
     with st.container(border=True):
-        st.subheader("Orders by service")
+        st.subheader("Order per layanan")
         st.bar_chart(
             d["revenue_service"],
             x="service_type",
@@ -60,7 +60,7 @@ with col2:
         )
 
 with st.container(border=True):
-    st.subheader("Service breakdown")
+    st.subheader("Rincian per layanan")
     st.dataframe(
         d["revenue_service"].rename(
             columns={
@@ -87,12 +87,12 @@ with st.container(border=True):
     )
 
 st.caption(
-    "SATUAN (per-item) records revenue on 2.1% of orders — its 0.8% revenue share "
-    "is an artifact of missing capture, not of low business value."
+    "SATUAN (per item) mencatat revenue hanya di 2.1% order — share 0.8% itu "
+    "akibat pencatatan yang belum lengkap, bukan nilai bisnis yang rendah."
 )
 
 with st.container(border=True):
-    st.subheader("Estimated revenue gap")
+    st.subheader("Estimasi gap pendapatan")
     st.dataframe(
         gap.rename(
             columns={
@@ -114,7 +114,7 @@ with st.container(border=True):
     )
 
 with st.container(border=True):
-    st.subheader("Customer revenue concentration (Pareto)")
+    st.subheader("Konsentrasi pendapatan pelanggan (Pareto)")
     pareto = d["pareto"]
 
     line = (
@@ -157,6 +157,6 @@ with st.container(border=True):
     st.altair_chart(ref_x + ref_y + point + line, width="stretch")
 
 st.caption(
-    "The top 20% of customers account for 57.7% of observed revenue "
-    "(bootstrap 95% CI 52.2–63.5%) — concentrated, but not a strict 80/20 rule."
+    "Top 20% pelanggan menyumbang 57.7% observed revenue (bootstrap 95% CI "
+    "52.2–63.5%) — terkonsentrasi, tapi bukan aturan 80/20 yang kaku."
 )

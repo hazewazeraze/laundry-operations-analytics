@@ -5,7 +5,15 @@ from data_loader import load_all, sensitivity
 d = load_all()
 hyp = d["hypotheses"]
 
-st.subheader("Column coverage")
+st.info(
+    "**Sumber data:** catatan lapangan sebuah laundry kampus (Laundry Kampus). "
+    "Nama pelanggan sudah dianonimkan dan catatan dibersihkan sehingga tidak "
+    "selalu persis dengan kondisi lapangan asli — demi menjaga kerahasiaan. "
+    "Angka-angka di sini dipakai untuk studi kasus analitik, bukan sebagai "
+    "laporan kinerja operasional yang sebenarnya."
+)
+
+st.subheader("Cakupan kolom")
 st.bar_chart(
     d["quality"],
     x="column",
@@ -15,12 +23,12 @@ st.bar_chart(
     x_label="Coverage (%)",
 )
 st.caption(
-    "Revenue: 66.2% · weight: 91.9% · cost fields: essentially absent. "
-    "All financial conclusions are stated as observed revenue."
+    "Revenue: 66.2% · berat: 91.9% · kolom biaya: praktis kosong. Semua "
+    "kesimpulan keuangan dinyatakan sebagai observed revenue."
 )
 
 with st.container(border=True):
-    st.subheader("Revenue coverage by service")
+    st.subheader("Cakupan revenue per layanan")
     st.dataframe(
         d["coverage"].rename(
             columns={
@@ -40,7 +48,7 @@ with st.container(border=True):
     )
 
 with st.container(border=True):
-    st.subheader("Hypothesis tests")
+    st.subheader("Uji hipotesis")
     renamed = hyp.rename(
         columns={
             "hypothesis": "Hypothesis",
@@ -63,13 +71,12 @@ with st.container(border=True):
     styled = renamed.style.map(verdict_style, subset=["Verdict"])
     st.dataframe(styled, hide_index=True, width="stretch")
     st.caption(
-        "Permutation, bootstrap, and Monte Carlo tests — no parametric "
-        "assumptions. Full results also live in "
-        "`outputs/tables/hypothesis_results.csv`."
+        "Permutation, bootstrap, dan Monte Carlo — tanpa asumsi parametrik. "
+        "Hasil lengkap juga ada di `outputs/tables/hypothesis_results.csv`."
     )
 
 with st.container(border=True):
-    st.subheader("Robustness: segment shares vs revenue coverage")
+    st.subheader("Robustness: share segment vs cakupan revenue")
     n_robust = int((d["customers"]["revenue_coverage"] >= 0.8).sum())
     st.dataframe(
         sensitivity(d["customers"]).rename(
@@ -88,19 +95,19 @@ with st.container(border=True):
         },
     )
     st.caption(
-        f"Recomputed on the {n_robust} customers with ≥80% revenue coverage. "
-        "The Premium share falls from 55.9% to 39.6% — segment shares are "
-        "directional, not exact rankings."
+        f"Dihitung ulang pada {n_robust} pelanggan dengan cakupan revenue ≥80%. "
+        "Share Premium turun dari 55.9% ke 39.6% — share segment bersifat arah, "
+        "bukan peringkat pasti."
     )
 
-with st.expander("Limitations"):
+with st.expander("Keterbatasan"):
     st.markdown(
         """
-- **Incomplete revenue.** All financial figures are observed revenue; ~30% of transaction value is estimated to be unrecorded.
-- **Short window.** Two months (April–May 2026) — no seasonality or long-term cohort/CLV conclusions.
-- **No timestamps.** SLA is measured in days, not hours.
-- **Customer identity.** 20 transactions carry no customer name and are excluded from customer-level analysis.
-- **Segment sensitivity.** Segment revenue shares shift on the high-coverage subset (table above).
-- **No cost data.** `unit_cost` coverage is 0.6% — no margin analysis is possible.
+- **Revenue belum lengkap.** Semua angka keuangan adalah observed revenue; ~30% nilai transaksi diperkirakan belum tercatat.
+- **Jendela pendek.** Dua bulan (April–Mei 2026) — tanpa kesimpulan musiman atau CLV.
+- **Tanpa timestamp.** SLA diukur dalam hari, bukan jam; hitung tanggal mentah tanpa toleransi membuat on-time rate konservatif (38%, lihat halaman Operasional).
+- **Identitas pelanggan.** 20 transaksi tanpa nama pelanggan, dikecualikan dari analisis per pelanggan.
+- **Sensitivitas segment.** Share segment bergeser di subset cakupan tinggi (tabel di atas).
+- **Tanpa data biaya.** Cakupan `unit_cost` 0.6% — analisis margin tidak mungkin.
 """
     )

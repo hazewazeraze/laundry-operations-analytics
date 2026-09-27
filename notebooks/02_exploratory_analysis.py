@@ -818,6 +818,83 @@ print(
 )
 
 
+late_orders = sla[
+    sla["is_late"] == True
+]
+
+late_within_one_day = int(
+    late_orders["days_late"]
+    .le(1)
+    .sum()
+)
+
+on_time_plus_one = int(
+    (
+        sla["service_days"]
+        <= sla["promised_days"] + 1
+    ).sum()
+)
+
+sla_sensitivity = pd.DataFrame(
+    {
+        "Metric": [
+            "Orders with SLA measurable",
+            "On-time orders (strict)",
+            "On-time rate strict (%)",
+            "Late orders",
+            "Late by at most 1 day",
+            "Late by more than 1 day",
+            "On-time orders (+1 day tolerance)",
+            "On-time rate +1 day (%)",
+        ],
+
+        "Value": [
+            len(sla),
+
+            int(
+                sla["is_late"]
+                .eq(False)
+                .sum()
+            ),
+
+            round(
+                sla["is_late"]
+                .eq(False)
+                .sum()
+                /
+                len(sla)
+                *
+                100,
+                1
+            ),
+
+            len(late_orders),
+
+            late_within_one_day,
+
+            len(late_orders)
+            -
+            late_within_one_day,
+
+            on_time_plus_one,
+
+            round(
+                on_time_plus_one
+                /
+                len(sla)
+                *
+                100,
+                1
+            ),
+        ],
+    }
+)
+
+
+print("\nSLA sensitivity (strict vs 1-day tolerance):")
+print(sla_sensitivity)
+
+
 # =========================
 # 7. Frequency vs value
 # =========================
@@ -1025,6 +1102,11 @@ sla_overall.to_csv(
 
 sla_by_promise.to_csv(
     f"{output_folder}/sla_by_promise_summary.csv"
+)
+
+sla_sensitivity.to_csv(
+    f"{output_folder}/sla_sensitivity_report.csv",
+    index=False
 )
 
 

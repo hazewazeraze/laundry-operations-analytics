@@ -9,38 +9,38 @@ st.set_page_config(
 )
 
 QUESTIONS = {
-    "Overview": "What happened?",
-    "Revenue & services": "Where does revenue come from?",
-    "Customers": "Who matters?",
-    "Operations": "Can we deliver?",
-    "Data quality": "How reliable are our conclusions?",
+    "Ikhtisar": "Apa yang terjadi?",
+    "Pendapatan & layanan": "Pendapatan berasal dari mana?",
+    "Pelanggan": "Siapa yang paling berharga?",
+    "Operasional": "Bisa tepat waktu tidak?",
+    "Kualitas data": "Seberapa yakin kita dengan hasil ini?",
 }
 
 page = st.navigation(
     [
         st.Page(
             "app_pages/overview.py",
-            title="Overview",
+            title="Ikhtisar",
             icon=":material/dashboard:",
         ),
         st.Page(
             "app_pages/revenue.py",
-            title="Revenue & services",
+            title="Pendapatan & layanan",
             icon=":material/payments:",
         ),
         st.Page(
             "app_pages/customers.py",
-            title="Customers",
+            title="Pelanggan",
             icon=":material/groups:",
         ),
         st.Page(
             "app_pages/operations.py",
-            title="Operations",
+            title="Operasional",
             icon=":material/local_shipping:",
         ),
         st.Page(
             "app_pages/quality.py",
-            title="Data quality",
+            title="Kualitas data",
             icon=":material/fact_check:",
         ),
     ],
@@ -50,11 +50,15 @@ page = st.navigation(
 with st.sidebar:
     st.markdown("**Laundry Operations Analytics**")
     st.caption(
-        "467 validated transactions · 1 Apr – 30 May 2026 · 155 identified customers"
+        "467 transaksi valid · 1 Apr – 30 May 2026 · 155 pelanggan teridentifikasi"
     )
     st.caption(
-        "All revenue figures are **observed revenue** — recorded on 66.2% of "
-        "transactions."
+        "Semua angka pendapatan adalah **observed revenue** — tercatat pada "
+        "66.2% transaksi."
+    )
+    st.caption(
+        "Sumber: catatan lapangan Laundry Kampus, dianonimkan dan tidak persis "
+        "sama dengan kondisi aslinya (kerahasiaan)."
     )
 
 st.title(f"{page.icon} {page.title}")

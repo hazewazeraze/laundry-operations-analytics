@@ -1,0 +1,9 @@
+Metric,Value
+Orders with SLA measurable,445.0
+On-time orders (strict),169.0
+On-time rate strict (%),38.0
+Late orders,276.0
+Late by at most 1 day,211.0
+Late by more than 1 day,65.0
+On-time orders (+1 day tolerance),380.0
+On-time rate +1 day (%),85.4

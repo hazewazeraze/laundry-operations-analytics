@@ -8,25 +8,29 @@ segments = d["segments"]
 
 with st.container(horizontal=True):
     st.metric(
-        "Identified customers",
+        "Pelanggan teridentifikasi",
         f"{stat(kpi, 'Unique Customers'):,.0f}",
         border=True,
     )
     st.metric(
-        "Repeat customer rate",
+        "Tingkat repeat customer",
         f"{stat(kpi, 'Repeat Customer Rate (%)'):.1f}%",
         border=True,
     )
     st.metric(
-        "Top 20% revenue share",
+        "Kontribusi top 20% pelanggan",
         f"{stat(kpi, 'Top 20% Revenue Share (%)'):.1f}%",
         border=True,
     )
     repeat_share = stat(d["concentration"], "Repeat share of revenue (%)")
-    st.metric("Repeat customer revenue share", f"{repeat_share:.1f}%", border=True)
+    st.metric(
+        "Kontribusi revenue repeat customer",
+        f"{repeat_share:.1f}%",
+        border=True,
+    )
 
 with st.container(border=True):
-    st.subheader("Observed segments")
+    st.subheader("Segment pelanggan (observed)")
     st.dataframe(
         segments.rename(
             columns={
@@ -56,15 +60,15 @@ with st.container(border=True):
         },
     )
     st.caption(
-        "Observed transaction patterns in the two-month window — not lifetime "
-        "customer value. Segment revenue covers identified-customer orders only."
+        "Pola transaksi observed dalam jendela dua bulan — bukan nilai pelanggan "
+        "seumur hidup. Revenue segment hanya mencakup order dengan nama pelanggan."
     )
 
 col1, col2 = st.columns(2)
 
 with col1:
     with st.container(border=True):
-        st.subheader("Revenue share by segment")
+        st.subheader("Share pendapatan per segment")
         st.bar_chart(
             segments,
             x="segment",
@@ -76,7 +80,7 @@ with col1:
 
 with col2:
     with st.container(border=True):
-        st.subheader("Orders vs revenue per customer")
+        st.subheader("Order vs pendapatan per pelanggan")
         st.scatter_chart(
             d["customers"],
             x="total_orders",
@@ -88,7 +92,7 @@ with col2:
         )
 
 with st.container(border=True):
-    st.subheader("Segment performance vs SLA")
+    st.subheader("Performa segment vs SLA")
     col_a, col_b = st.columns(2)
 
     with col_a:
@@ -131,11 +135,11 @@ with st.container(border=True):
             },
         )
         st.caption(
-            "Frequency drives total revenue, but not value per order — "
-            "the latter association is not statistically distinguishable from zero."
+            "Frekuensi mendorong total pendapatan, tapi tidak nilai per order — "
+            "asosiasi keduanya tidak beda secara signifikan dari nol."
         )
 
-with st.expander("Top 10 customers by observed revenue"):
+with st.expander("Top 10 pelanggan berdasarkan observed revenue"):
     top = d["customers"].nlargest(10, "total_revenue")[
         [
             "customer_id",
@@ -174,6 +178,6 @@ with st.expander("Top 10 customers by observed revenue"):
     )
 
 st.caption(
-    "Robustness of segment shares against revenue coverage is checked on the "
-    "Data quality page."
+    "Uji robustness share segment terhadap cakupan revenue ada di halaman "
+    "Kualitas data."
 )
