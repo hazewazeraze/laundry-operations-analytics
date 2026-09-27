@@ -1,5 +1,8 @@
-pandas
-numpy
-matplotlib
-altair
-streamlit
+# Compatible ranges: lower bound = version this project was last verified
+# against, upper bound = next major release, so a breaking upgrade cannot be
+# pulled in silently. Verified on Python 3.14 with streamlit 1.61.1 and 1.64.0.
+pandas>=3.0,<4
+numpy>=2.5,<3
+matplotlib>=3.11,<4
+altair>=6.2,<7
+streamlit>=1.61,<2
