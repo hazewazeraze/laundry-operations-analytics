@@ -1,7 +1,4 @@
-# =====================================================
-# 04 CUSTOMER ANALYSIS V4
-# Laundry Analytics Portfolio Project
-# =====================================================
+# 04 CUSTOMER ANALYSIS 
 
 import os
 
