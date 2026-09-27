@@ -4,6 +4,7 @@
 
 **Scope:** small-to-medium laundry business · **Period:** 1 April – 30 May 2026 · **Records:** 467 validated transactions · 155 identified customers
 **Stack:** Python · pandas · NumPy · Matplotlib · Streamlit · permutation and bootstrap statistics
+**Live:** [laundry-operations-analytics.streamlit.app](https://laundry-operations-analytics.streamlit.app/)
 
 ---
 

@@ -7,7 +7,7 @@ Paste-ready English copy for the portfolio landing page. Layout notes and publis
 | Link | Placeholder | Where |
 |---|---|---|
 | GitHub | `https://github.com/hazewazeraze/laundry-operations-analytics` | Hero button, Footer |
-| Dashboard | `https://laundry-operations-analytics-pauyhvpb59gd9n8nkogfsj.streamlit.app` | Hero button, Dashboard section, Footer |
+| Dashboard | `https://laundry-operations-analytics.streamlit.app` | Hero button, Dashboard section, Footer |
 | Framer | `<FRAMER_URL>` | CV |
 
 > Never publish `localhost:8501` — deploy the dashboard to Streamlit Cloud first.
@@ -24,7 +24,7 @@ Paste-ready English copy for the portfolio landing page. Layout notes and publis
 
 **Built with:** Python · Pandas · NumPy · Streamlit · Statistical Testing
 
-**Buttons:** `View Dashboard` → `https://laundry-operations-analytics-pauyhvpb59gd9n8nkogfsj.streamlit.app` · `View GitHub` → `https://github.com/hazewazeraze/laundry-operations-analytics`
+**Buttons:** `View Dashboard` → `https://laundry-operations-analytics.streamlit.app` · `View GitHub` → `https://github.com/hazewazeraze/laundry-operations-analytics`
 
 **Stat strip (big numbers, one row):**
 
@@ -137,7 +137,7 @@ One-liners under each step (optional, small text):
 
 **Body:** Explore customer behavior, revenue patterns, operational performance, and analytical validation through five connected views — Overview, Revenue & services, Customers, Operations, and Data quality.
 
-**Button:** `Open dashboard` → `https://laundry-operations-analytics-pauyhvpb59gd9n8nkogfsj.streamlit.app`
+**Button:** `Open dashboard` → `https://laundry-operations-analytics.streamlit.app`
 
 > Embed (Framer iframe) only after Streamlit Cloud deploy; if the iframe is blocked or slow, keep the button. Never embed localhost.
 
