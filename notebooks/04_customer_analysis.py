@@ -7,9 +7,7 @@ import numpy as np
 import pandas as pd
 
 
-# =========================
-# PATH
-# =========================
+# Paths
 
 INPUT_FILE = "../data/processed/laundry_clean.csv"
 
@@ -28,9 +26,7 @@ os.makedirs(
 )
 
 
-# =========================
-# LOAD DATA
-# =========================
+# Load data
 
 df = pd.read_csv(INPUT_FILE)
 
@@ -48,9 +44,7 @@ print("Dataset shape:")
 print(df.shape)
 
 
-# =========================
-# BASIC CUSTOMER VALUE
-# =========================
+# Basic customer value
 
 customer_value = (
     df.groupby("customer_id")
@@ -115,9 +109,7 @@ print(
 )
 
 
-# =========================
-# CUSTOMER SEGMENTATION
-# =========================
+# Customer segmentation
 
 # Percentile thresholds (observed revenue)
 
@@ -177,9 +169,7 @@ print(f"  orders_q75           : {orders_q75}")
 print(f"  orders_min_regular   : {orders_min_regular}")
 
 
-# =========================
-# SEGMENT SUMMARY
-# =========================
+# Segment summary
 
 segment_summary = (
     customer_value
@@ -230,9 +220,7 @@ print(
 )
 
 
-# =========================
-# SENSITIVITY CHECK
-# =========================
+# Sensitivity check
 
 high_coverage = customer_value[
     customer_value["revenue_coverage"]
@@ -296,9 +284,7 @@ print(
 )
 
 
-# =========================
-# SEGMENT x SLA
-# =========================
+# Segment x SLA
 
 segment_map = customer_value["segment"]
 
@@ -342,9 +328,7 @@ print(
 )
 
 
-# =========================
-# EXPORT TABLES
-# =========================
+# Export tables
 
 customer_value.to_csv(
     f"{OUTPUT_DIR}/customer_value_summary.csv"
@@ -367,9 +351,7 @@ segment_summary.to_csv(
 )
 
 
-# =========================
-# TOP CUSTOMERS FREQUENCY
-# =========================
+# Top customers by frequency
 
 top_frequency = (
     customer_value
@@ -422,9 +404,7 @@ plt.savefig(
 plt.close()
 
 
-# =========================
-# TOP CUSTOMERS REVENUE
-# =========================
+# Top customers by revenue
 
 top_revenue = (
     customer_value
@@ -478,9 +458,7 @@ plt.savefig(
 plt.close()
 
 
-# =========================
-# SEGMENT DISTRIBUTION
-# =========================
+# Segment distribution
 
 segment_count = (
     customer_value["segment"]
@@ -530,9 +508,7 @@ plt.savefig(
 plt.close()
 
 
-# =========================
-# REVENUE BY SEGMENT
-# =========================
+# Revenue by segment
 
 plt.figure(figsize=(8, 5))
 
@@ -576,9 +552,7 @@ plt.savefig(
 plt.close()
 
 
-# =========================
-# REVENUE PER ORDER BY SEGMENT
-# =========================
+# Revenue per order by segment
 
 plt.figure(figsize=(8, 5))
 
@@ -622,9 +596,7 @@ plt.savefig(
 plt.close()
 
 
-# =========================
-# FREQUENCY vs REVENUE SCATTER
-# =========================
+# Frequency vs revenue scatter
 
 colors = {
     "Premium Customer": "#1f77b4",
@@ -689,9 +661,7 @@ plt.savefig(
 plt.close()
 
 
-# =========================
-# FINAL OUTPUT
-# =========================
+# Final output
 
 print("\nFinal segment summary:")
 print(
@@ -710,5 +680,5 @@ print(
 )
 
 print(
-    "\nCustomer analysis V4 completed."
+    "\nCustomer analysis completed."
 )

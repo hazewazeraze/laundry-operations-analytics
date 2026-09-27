@@ -22,9 +22,7 @@ except OSError:
     pass
 
 
-# =========================
 # Load Dataset
-# =========================
 
 df = pd.read_csv(
     "../data/processed/laundry_clean.csv"
@@ -35,9 +33,7 @@ df["order_date"] = pd.to_datetime(
 )
 
 
-# =========================
 # Output folders
-# =========================
 
 chart_folder = "../outputs/charts"
 
@@ -54,9 +50,7 @@ os.makedirs(
 )
 
 
-# =========================
 # Helper function
-# =========================
 
 def add_labels(
     fmt="%.0f",
@@ -72,9 +66,7 @@ def add_labels(
         )
 
 
-# =========================
 # Customer preparation
-# =========================
 
 customer_df = df[
     df["customer_id"]
@@ -91,10 +83,6 @@ customer_frequency = (
 
 repeat_customer = int(
     (customer_frequency > 1).sum()
-)
-
-one_time_customer = int(
-    (customer_frequency == 1).sum()
 )
 
 
@@ -123,9 +111,7 @@ sla = df[
 ]
 
 
-# =========================
 # KPI Summary
-# =========================
 
 kpi = pd.DataFrame(
     {
@@ -194,9 +180,7 @@ kpi.to_csv(
 )
 
 
-# ==================================================
 # 1. Revenue contribution (with coverage)
-# ==================================================
 
 revenue_service = (
     df
@@ -275,9 +259,7 @@ plt.savefig(
 plt.close()
 
 
-# ==================================================
 # 2. Transaction volume by service
-# ==================================================
 
 service_volume = (
     df["service_type"]
@@ -320,9 +302,7 @@ plt.savefig(
 plt.close()
 
 
-# ==================================================
 # 3. Weekday pattern (with expected)
-# ==================================================
 
 weekday_order = [
     "Monday",
@@ -423,9 +403,7 @@ plt.savefig(
 plt.close()
 
 
-# ==================================================
 # 4. Turnaround distribution (boxplot)
-# ==================================================
 
 cw = df[
     df["service_days"]
@@ -493,9 +471,7 @@ plt.savefig(
 plt.close()
 
 
-# ==================================================
 # 5. On-time rate by promised time
-# ==================================================
 
 sla_by_promise = (
     sla
@@ -573,9 +549,7 @@ plt.savefig(
 plt.close()
 
 
-# ==================================================
 # 6. Customer revenue Pareto
-# ==================================================
 
 rev_sorted = customer_revenue.sort_values(
     ascending=False
@@ -652,9 +626,7 @@ plt.savefig(
 plt.close()
 
 
-# =========================
 # Export supporting tables
-# =========================
 
 revenue_service.to_csv(
     f"{kpi_folder}/revenue_by_service.csv"
@@ -686,7 +658,7 @@ sla_by_promise.to_csv(
 
 
 print(
-    "Visualization v2 completed."
+    "Visualization completed."
 )
 
 print(

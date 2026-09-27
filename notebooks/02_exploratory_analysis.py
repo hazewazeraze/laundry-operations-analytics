@@ -11,9 +11,7 @@ pd.set_option(
 )
 
 
-# =========================
 # Load cleaned dataset
-# =========================
 
 df = pd.read_csv(
     "../data/processed/laundry_clean.csv"
@@ -39,9 +37,7 @@ identified = df[
 ].copy()
 
 
-# =========================
 # 1. Dataset overview
-# =========================
 
 weight_based = df[
     df["is_weight_based"]
@@ -114,9 +110,7 @@ print(
 )
 
 
-# =========================
 # 2. Revenue missingness (MNAR check)
-# =========================
 
 coverage = (
     df
@@ -159,9 +153,7 @@ if coverage[
     )
 
 
-# =========================
 # 3. Customer KPI & concentration
-# =========================
 
 customer_orders = (
     identified
@@ -310,9 +302,7 @@ print("\nRevenue concentration:")
 print(concentration)
 
 
-# =========================
 # 4. Revenue analysis (with coverage)
-# =========================
 
 revenue_service = (
     df
@@ -494,9 +484,7 @@ print(
 )
 
 
-# =========================
 # 5. Volume, weekday, trend
-# =========================
 
 daily_orders = (
     df["order_day"]
@@ -651,9 +639,7 @@ print("\nMonthly trend:")
 print(monthly)
 
 
-# =========================
 # 6. Operational & SLA
-# =========================
 
 turnaround = df["service_days"].dropna()
 
@@ -905,9 +891,7 @@ print("\nSLA sensitivity (calendar days vs open days):")
 print(sla_sensitivity)
 
 
-# =========================
 # 7. Frequency vs value
-# =========================
 
 def spearman(x, y):
 
@@ -985,9 +969,7 @@ print("\nCorrelation summary:")
 print(correlation_summary)
 
 
-# =========================
 # 8. Voucher analysis
-# =========================
 
 df["voucher_used"] = (
     df["voucher_code"]
@@ -1021,9 +1003,7 @@ print(
 )
 
 
-# =========================
 # Export
-# =========================
 
 output_folder = "../data/processed"
 
@@ -1120,4 +1100,4 @@ sla_sensitivity.to_csv(
 )
 
 
-print("\nEDA v2 completed. Summary files exported.")
+print("\nEDA completed. Summary files exported.")

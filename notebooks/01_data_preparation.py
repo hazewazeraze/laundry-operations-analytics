@@ -25,9 +25,7 @@ ERROR_TOKENS = [
 ]
 
 
-# =========================
 # Load raw data
-# =========================
 
 df = pd.read_csv(
     "../data/raw/laundry_raw.csv",
@@ -43,9 +41,7 @@ df = df.dropna(
 rows_with_data = len(df)
 
 
-# =========================
 # Assign column names
-# =========================
 
 df.columns = [
     "no",
@@ -76,9 +72,7 @@ df.drop(
 )
 
 
-# =========================
 # Remove spreadsheet errors
-# =========================
 
 try:
     string_columns = (
@@ -109,9 +103,7 @@ df = df.replace(
 )
 
 
-# =========================
 # Date conversion
-# =========================
 
 df["order_date"] = pd.to_datetime(
     df["order_date"],
@@ -137,9 +129,7 @@ df.loc[
 ] = pd.NaT
 
 
-# =========================
 # Standardize text
-# =========================
 
 text_columns = [
     "order_status",
@@ -159,9 +149,7 @@ for col in text_columns:
     )
 
 
-# =========================
 # Numeric conversion
-# =========================
 
 df["weight_kg"] = pd.to_numeric(
     df["weight_kg"],
@@ -199,9 +187,7 @@ for col in money_columns:
     )
 
 
-# =========================
 # Remove non-transaction rows
-# =========================
 
 no_numeric = pd.to_numeric(
     df["no"],
@@ -239,9 +225,7 @@ df["no"] = (
 )
 
 
-# =========================
 # Create customer ID
-# =========================
 
 name_key = (
     df["customer_name"]
@@ -270,9 +254,7 @@ df["customer_id"] = (
 )
 
 
-# =========================
 # Remove duplicate transactions
-# =========================
 
 dup_keys = [
     "customer_id",
@@ -345,9 +327,7 @@ df.loc[
 )
 
 
-# =========================
 # Handle missing values
-# =========================
 
 df["voucher_amount"] = (
     df["voucher_amount"]
@@ -375,9 +355,7 @@ df["service_detail"] = (
 )
 
 
-# =========================
 # Data quality flags
-# =========================
 
 df["has_customer"] = (
     df["customer_name"]
@@ -444,15 +422,7 @@ df["data_quality_flag"] = (
 )
 
 
-df["customer_name"] = (
-    df["customer_name"]
-    .fillna("UNKNOWN CUSTOMER")
-)
-
-
-# =========================
 # Create service category
-# =========================
 
 package_services = [
     "PCS",
@@ -487,9 +457,7 @@ df["is_weight_based"] = (
 )
 
 
-# =========================
 # Feature engineering
-# =========================
 
 raw_days = (
     df["completion_date"]
@@ -600,9 +568,7 @@ df["days_late"] = (
 )
 
 
-# =========================
 # Remove original customer name
-# =========================
 
 df.drop(
     columns=["customer_name"],
@@ -610,9 +576,7 @@ df.drop(
 )
 
 
-# =========================
 # Coverage reports
-# =========================
 
 column_coverage = (
     df.notna()
@@ -648,9 +612,7 @@ service_coverage[
 ).round(1)
 
 
-# =========================
 # Final check
-# =========================
 
 print("\nReconciliation:")
 print(f"  raw rows            : {raw_rows}")
@@ -724,9 +686,7 @@ print(
 )
 
 
-# =========================
 # Save clean dataset
-# =========================
 
 output_folder = "../data/processed"
 

@@ -10,6 +10,9 @@ venv/
 # Streamlit secrets
 .streamlit/secrets.toml
 
+# Local notes
+FRAMER.md
+
 # OS
 Thumbs.db
 desktop.ini

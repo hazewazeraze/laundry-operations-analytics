@@ -43,7 +43,7 @@ Central question:
 | After validation | **467 validated transactions** |
 | Identifiable | 447 transactions carry a customer name (20 do not) |
 | Customers | 155 unique customers (name-standardized to `Customer_001` … `Customer_155`) |
-| Weight | 1,846.3 kg recorded (91.9% coverage on weight-based orders) |
+| Weight | 1,846.3 kg recorded on weight-based orders (weight captured on 91.9% of all transactions) |
 
 > 472 exported rows → 467 validated transactions → 447 identifiable transactions → 155 customers.
 
@@ -142,7 +142,7 @@ Customers were segmented on observed revenue and order frequency (quartile-based
 
 ![Customer revenue Pareto](outputs/charts/06_pareto_customers.png)
 
-![Orders vs revenue by segment](outputs/charts/segment_scatter.png)
+![Orders vs revenue by segment](outputs/customer_analysis/segment_scatter.png)
 
 ### Segment × SLA
 

@@ -21,9 +21,7 @@ N_ITER = 5000
 SEED = 42
 
 
-# =========================
 # Load data
-# =========================
 
 df = pd.read_csv(
     "../data/processed/laundry_clean.csv"
@@ -45,9 +43,7 @@ identified = df[
 ].copy()
 
 
-# =========================
 # Helpers
-# =========================
 
 def spearman_rho(x, y):
 
@@ -176,9 +172,7 @@ def gini(values):
 results = []
 
 
-# =========================
 # H1: revenue concentration
-# =========================
 
 customer_revenue = (
     identified
@@ -248,9 +242,7 @@ print(f"  95% CI        : {ci_low * 100:.1f}% - {ci_high * 100:.1f}%")
 print(f"  gini          : {gini_coefficient:.3f}")
 
 
-# =========================
 # H2: frequency vs value
-# =========================
 
 cv = identified.groupby("customer_id").agg(
     orders=("customer_id", "size"),
@@ -312,9 +304,7 @@ print(f"  orders ~ revenue : rho={rho_rev:.3f}  p={p_rev:.4f}")
 print(f"  orders ~ AOV     : rho={rho_aov:.3f}  p={p_aov:.4f}")
 
 
-# =========================
 # H3: volume vs revenue vs turnaround rank
-# =========================
 
 rank_volume = (
     df["service_type"]
@@ -366,9 +356,7 @@ print("\nH3: rank comparison")
 print(rank_table)
 
 
-# =========================
 # H4: turnaround by service
-# =========================
 
 turnaround_data = df[
     df["service_days"].notna()
@@ -432,9 +420,7 @@ print(f"  service_days ~ service_type : H={h4_stat:.2f}  p={h4_p:.4f}")
 print(f"  days_late   ~ service_type  : H={h4b_stat:.2f}  p={h4b_p:.4f}")
 
 
-# =========================
 # H5: weekday pattern
-# =========================
 
 weekday_order = [
     "Monday",
@@ -528,9 +514,7 @@ print("\nH5: weekday pattern")
 print(f"  chi2 = {chi2:.2f}   p = {h5_p:.4f}")
 
 
-# =========================
 # H6: bottleneck
-# =========================
 
 orders_per_day = (
     df.groupby("order_date")
@@ -629,9 +613,7 @@ print(
 )
 
 
-# =========================
 # Export
-# =========================
 
 output_folder = "../outputs/tables"
 

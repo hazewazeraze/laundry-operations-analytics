@@ -9,10 +9,6 @@ sens = d["sla_sensitivity"]
 
 on_time_orders = stat(sla, "On-time orders")
 measurable = stat(sla, "Orders with SLA measurable")
-sunday_orders = stat(sens, "Orders crossing a Sunday")
-cal_rate = stat(sens, "On-time rate calendar days (%)")
-open_rate = stat(sens, "On-time rate open days (%)")
-open_plus1 = stat(sens, "On-time rate open days +1 day (%)")
 peak_backlog = float(d["backlog"]["cumulative_backlog"].max())
 
 with st.container(horizontal=True):
@@ -41,20 +37,26 @@ with st.container(horizontal=True):
     )
     st.metric("Peak backlog", f"{peak_backlog:,.0f} orders", border=True)
 
-with st.container(border=True):
-    st.subheader("Why does a raw calendar count say 38%?")
-    st.markdown(
-        f"""
+if "Orders crossing a Sunday" in sens["Metric"].values:
+    sunday_orders = stat(sens, "Orders crossing a Sunday")
+    cal_rate = stat(sens, "On-time rate calendar days (%)")
+    open_rate = stat(sens, "On-time rate open days (%)")
+    open_plus1 = stat(sens, "On-time rate open days +1 day (%)")
+
+    with st.container(border=True):
+        st.subheader("Why does a raw calendar count say 38%?")
+        st.markdown(
+            f"""
 - Promises such as **3 HARI** are handling days, and the shop is closed on Sundays. Counted in raw calendar days, every closed Sunday becomes lateness — **{sunday_orders:.0f} of {measurable:.0f} measurable orders span at least one Sunday**.
 - Measured in **open days (Monday–Saturday)**, on-time is **{open_rate:.1f}%**; the raw calendar count reads **{cal_rate:.1f}%**.
 - Add one open day of slack and the rate would be {open_plus1:.1f}% — so {open_rate:.1f}% is a strict reading, not a generous one.
 - Almost no order is recorded as finishing ahead of its promise (5 of 445), so genuinely fast jobs barely reach the record either.
 """
-    )
-    st.caption(
-        "Both readings are computed in 02_exploratory_analysis.py and stored in "
-        "data/processed/sla_sensitivity_report.csv."
-    )
+        )
+        st.caption(
+            "Both readings are computed in 02_exploratory_analysis.py and stored in "
+            "data/processed/sla_sensitivity_report.csv."
+        )
 
 st.info(
     "The weak point is still the standard 3-day promise: 286 orders (64% of "
