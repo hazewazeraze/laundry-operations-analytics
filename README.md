@@ -60,9 +60,9 @@ Central question:
 | Column | Description |
 |---|---|
 | `order_date`, `completion_date` | Order intake and completion dates |
-| `service_type` | PCS (337), PCL (62), SATUAN (48), PS (20) |
-| `service_detail` | Promised turnaround: `10 JAM`, `1 HARI`, `2 HARI`, `3 HARI`, `4 HARI`, `5 HARI` |
-| `service_category` | `LAUNDRY PACKAGE` (419) or `PER ITEM` (48, all SATUAN) |
+| `service_type` | PCS (337), PCL (62), PS (20) are clothing-related services; SATUAN (48) is per-item and also carries the shoe and bag cleaning orders |
+| `service_detail` | Promised turnaround: `10 JAM` (express); `1 HARI`, `2 HARI`, `3 HARI` (standard laundry services); `4 HARI` (shoe cleaning); `5 HARI` (bag cleaning); `7 HARI` (footwear treatment / special item treatment, 1 order) |
+| `service_category` | `LAUNDRY PACKAGE` (419) or `PER ITEM` (48, all SATUAN, including the shoe and bag cleaning orders) |
 | `weight_kg` | Order weight (weight-based services only) |
 | `total_revenue` | Observed revenue per transaction (66.2% coverage) |
 | `unit_cost`, `express_cost` | Cost fields — essentially not captured (0.6% / 4.9% coverage) |
@@ -198,13 +198,15 @@ SLA is measured in **open days — Monday to Saturday, Sunday closed** — becau
 | 4 HARI | 7 | 4.57 | 42.9% |
 | 5 HARI | 1 | 4.00 | 100% (n=1) |
 
-*The `10 JAM` row needs care: four of its seven orders finished the same day, and the other three are recorded 14 days later. With n=7 and dates rather than timestamps, that row is noise rather than a finding.*
+*Row notes: `10 JAM` is express, not a day-scale turnaround — four of its seven orders finished the same day and the other three are recorded 14 days later, so with n=7 and dates rather than timestamps it is noise rather than a finding. `4 HARI` is shoe cleaning (every order is logged as "Deep Clean") and `5 HARI` is bag cleaning (n=1); neither is a standard laundry service, so don't read those rows as everyday turnaround. `7 HARI` (1 order, footwear treatment) is missing only because that order has no usable intake date.*
 
 The weak point is still the **3 HARI promise — 286 orders, 64% of all measurable orders, 70.6% on-time**, against 93.2% for the 1-day promise. Reliability breaks down on the standard promise, not the rush ones.
 
 ![On-time rate by promise](outputs/charts/05_on_time_rate.png)
 
 ### Turnaround by Service
+
+PCS, PCL and PS are clothing-related services; SATUAN is per-item and also carries the shoe and bag cleaning orders, so its row mixes turnaround promises.
 
 Turnaround columns are calendar days; the late share uses the open-day SLA.
 
@@ -273,7 +275,7 @@ Full statistics — tests, statistics, p-values, confidence intervals — are in
 
 - **Incomplete revenue.** All financial figures are observed revenue; ~30% of transaction value is estimated to be unrecorded.
 - **Short window.** Two months (April–May 2026) — no seasonality or long-term cohort/CLV conclusions.
-- **No timestamps.** Dates only, so SLA is measured in whole days, not hours (except the `10 JAM` promise label). Promises are evaluated in open days (Sunday closed); the raw calendar reading — 38.0% on-time — stays in `sla_sensitivity_report.csv` as a reference.
+- **No timestamps.** Dates only, so SLA is measured in whole days, not hours (the express `10 JAM` service is the only sub-day label). Promises are evaluated in open days (Sunday closed); the raw calendar reading — 38.0% on-time — stays in `sla_sensitivity_report.csv` as a reference.
 - **Study-case data.** Field records from a campus laundry, anonymized and cleaned — not a verbatim mirror of live operations (confidentiality), and not an operational performance report.
 - **Names before standardization.** Customer identity comes from free-text names; 20 transactions have none and are excluded from customer-level analysis.
 - **Segment coverage sensitivity.** Segment revenue shares shift materially on the ≥80%-coverage subset (see robustness table).

@@ -87,7 +87,8 @@ with col2:
         )
         st.caption(
             "1-day work holds at 93.2%; the promise most customers pick is the "
-            "one that slips (70.6%)."
+            "one that slips (70.6%). 4 HARI is shoe cleaning and 5 HARI is bag "
+            "cleaning, not standard laundry."
         )
 
 if "Orders crossing a Sunday" in sens["Metric"].values:
@@ -139,7 +140,9 @@ with col3:
         )
         st.caption(
             "Calendar days. Services look different mainly because they carry "
-            "different promises — not different speed."
+            "different promises — not different speed. PCS, PCL and PS are "
+            "clothing-related; SATUAN is per-item and also carries the shoe "
+            "and bag cleaning orders."
         )
 
 with col4:

@@ -70,15 +70,19 @@ with st.expander("Data dictionary (key columns)"):
                 ),
                 (
                     "service_type",
-                    "Service class: PCS (337), PCL (62), SATUAN (48), PS (20)",
+                    "Service class: PCS/PCL/PS clothing-related; "
+                    "SATUAN (48) per-item, incl. shoe and bag cleaning",
                 ),
                 (
                     "service_detail",
-                    "Promised turnaround: 10 JAM, 1–5 HARI",
+                    "Promised turnaround: 10 JAM express; 1-3 HARI standard "
+                    "laundry; 4 HARI shoe cleaning; 5 HARI bag cleaning; "
+                    "7 HARI footwear treatment (1 order)",
                 ),
                 (
                     "service_category",
-                    "LAUNDRY PACKAGE (419) or PER ITEM (48, all SATUAN)",
+                    "LAUNDRY PACKAGE (419) or PER ITEM (48, all SATUAN, "
+                    "including the shoe and bag cleaning orders)",
                 ),
                 ("weight_kg", "Order weight, weight-based services (91.9%)"),
                 (
