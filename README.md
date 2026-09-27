@@ -343,7 +343,7 @@ cd ..
 python -m streamlit run dashboard/streamlit_app.py
 ```
 
-Each pipeline script prints its own summary and refreshes files under `data/processed/` and `outputs/`. Start with `01` — later stages read `../data/processed/laundry_clean.csv`.
+Each pipeline script prints its own summary and refreshes files under `data/processed/` and `outputs/`. Without the raw export, start at `02` — every later stage reads `../data/processed/laundry_clean.csv`.
 
 > **Note:** `data/raw/laundry_raw.csv` contains real customer names and is not distributed with this repository. Steps 02–05 and the dashboard run from the committed processed data; step 01 needs the raw export placed in `data/raw/` locally.
 
