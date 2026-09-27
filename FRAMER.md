@@ -6,8 +6,8 @@ Paste-ready English copy for the portfolio landing page. Layout notes and publis
 
 | Link | Placeholder | Where |
 |---|---|---|
-| GitHub | `<GITHUB_REPO_URL>` | Hero button, Footer |
-| Dashboard | `<STREAMLIT_CLOUD_URL>` | Hero button, Dashboard section, Footer |
+| GitHub | `https://github.com/hazewazeraze/laundry-operations-analytics` | Hero button, Footer |
+| Dashboard | `https://laundry-operations-analytics-pauyhvpb59gd9n8nkogfsj.streamlit.app` | Hero button, Dashboard section, Footer |
 | Framer | `<FRAMER_URL>` | CV |
 
 > Never publish `localhost:8501` — deploy the dashboard to Streamlit Cloud first.
@@ -18,13 +18,13 @@ Paste-ready English copy for the portfolio landing page. Layout notes and publis
 
 **H1:** Laundry Operations Analytics
 
-**Subtitle:** Turning transaction data into customer insights and operational improvements.
+**Subtitle:** Analyzing customer value and operational reliability through transaction data.
 
 **Body:** A data analytics project exploring customer behavior, revenue concentration, service reliability, and operational performance through transaction-level analysis — from raw export to statistically validated findings.
 
 **Built with:** Python · Pandas · NumPy · Streamlit · Statistical Testing
 
-**Buttons:** `View Dashboard` → `<STREAMLIT_CLOUD_URL>` · `View GitHub` → `<GITHUB_REPO_URL>`
+**Buttons:** `View Dashboard` → `https://laundry-operations-analytics-pauyhvpb59gd9n8nkogfsj.streamlit.app` · `View GitHub` → `https://github.com/hazewazeraze/laundry-operations-analytics`
 
 **Stat strip (big numbers, one row):**
 
@@ -38,7 +38,7 @@ Paste-ready English copy for the portfolio landing page. Layout notes and publis
 
 **H2:** From transaction records to business decisions
 
-**Body:** This project analyzes two months of laundry transaction data to understand customer value, revenue concentration, and operational reliability. Through data preparation, exploratory analysis, customer segmentation, and statistical validation, raw records are turned into actionable business insights — with data limitations quantified instead of hidden.
+**Body:** This project looks at two months of laundry transaction data to understand customer value, revenue concentration, and how reliable the delivery promises are. It runs from data cleaning and exploratory analysis to segmentation and statistical testing, and it puts the data limitations on the table instead of hiding them.
 
 ---
 
@@ -81,7 +81,7 @@ One-liners under each step (optional, small text):
 2. **Exploratory analysis** — revenue, demand patterns, data coverage
 3. **Customer analysis** — segmentation, concentration, Pareto, robustness
 4. **Operational analysis** — turnaround, SLA by promise, backlog
-5. **Hypothesis testing** — 8 permutation/bootstrap tests, supported and rejected
+5. **Hypothesis testing** — 8 permutation/bootstrap tests: supported, rejected, inconclusive
 6. **Interactive dashboard** — five views, same story as the documentation
 
 ---
@@ -137,7 +137,7 @@ One-liners under each step (optional, small text):
 
 **Body:** Explore customer behavior, revenue patterns, operational performance, and analytical validation through five connected views — Overview, Revenue & services, Customers, Operations, and Data quality.
 
-**Button:** `Open dashboard` → `<STREAMLIT_CLOUD_URL>`
+**Button:** `Open dashboard` → `https://laundry-operations-analytics-pauyhvpb59gd9n8nkogfsj.streamlit.app`
 
 > Embed (Framer iframe) only after Streamlit Cloud deploy; if the iframe is blocked or slow, keep the button. Never embed localhost.
 
@@ -204,7 +204,7 @@ Links: GitHub · Dashboard · README
 
 1. **GitHub repo** — push `README.md`, `requirements.txt`, `notebooks/`, `dashboard/`, `data/`, `outputs/` (add `.gitignore` for `__pycache__/`, `.streamlit/secrets.toml`)
 2. **Streamlit Cloud** — new app from the repo, entry file `dashboard/streamlit_app.py` (runtime installs from `requirements.txt`)
-3. **Smoke-test the live URL** — all 5 pages, then replace `<STREAMLIT_CLOUD_URL>` in Framer
+3. **Smoke-test the live URL** — open all 5 pages, then use it for the Framer buttons and embed
 4. **Framer** — build layout from the wireframe above, paste copy, set accent color
 5. **Optional embed** — Framer iframe to the Streamlit URL; fallback is the button
 6. **Final flow:** CV → Framer → GitHub + Dashboard → proof of skill

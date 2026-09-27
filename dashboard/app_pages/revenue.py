@@ -128,7 +128,7 @@ with st.container(border=True):
             ),
             y=alt.Y(
                 "cum_pct_revenue:Q",
-                title="Recorded revenue (cumulative %)",
+                title="Observed revenue (cumulative %)",
                 scale=alt.Scale(domain=[0, 100]),
             ),
             tooltip=[
@@ -157,6 +157,6 @@ with st.container(border=True):
     st.altair_chart(ref_x + ref_y + point + line, width="stretch")
 
 st.caption(
-    "The top 20% of customers account for 57.7% of recorded revenue "
+    "The top 20% of customers account for 57.7% of observed revenue "
     "(bootstrap 95% CI 52.2–63.5%) — concentrated, but not a strict 80/20 rule."
 )

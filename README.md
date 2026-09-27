@@ -9,17 +9,17 @@
 
 ## Project Overview
 
-This project turns two months of raw laundry transaction records into evidence for three business questions: who the valuable customers are, how revenue is distributed across services and customers, and whether operational promises (turnaround SLA) are actually kept.
+This project looks at two months of laundry transaction records to answer three questions: who the valuable customers are, how revenue is distributed across customers and services, and whether delivery promises are actually kept.
 
-The analysis pipeline covers data preparation, exploratory analysis, customer segmentation, and statistical validation. Every headline number in this README is reproducible by running the scripts in `notebooks/`.
+The pipeline runs from data cleaning through exploratory analysis, customer segmentation, and statistical testing. Every number in this README can be reproduced by running the scripts in `notebooks/`.
 
-Unlike typical dashboard-first projects, this one treats data quality as a finding in its own right: revenue is only recorded on 66.2% of transactions, and that limitation is quantified, tested, and carried through every revenue conclusion instead of being hidden.
+One caveat shapes everything else: revenue is only recorded on 66.2% of transactions. The analysis puts a number on that gap and labels every revenue figure as observed revenue instead of quietly assuming the data is complete.
 
 ---
 
 ## Business Problem
 
-A laundry business handles many transactions every day but rarely sees its own data organized. The analysis answers:
+A laundry business handles many transactions every day, but the records usually stay in raw spreadsheet form. The analysis answers:
 
 1. Which customers contribute the most business value?
 2. How is revenue distributed across customers and services — and how reliable is the observed revenue itself?
@@ -28,7 +28,7 @@ A laundry business handles many transactions every day but rarely sees its own d
 
 Central question:
 
-> How can transaction data be used to understand customer value and improve operational decision-making in a laundry business?
+> How can transaction data be used to understand customer value and support operational decisions in a laundry business?
 
 ---
 
@@ -98,7 +98,7 @@ By category: `LAUNDRY PACKAGE` = Rp 10,356,730 (99.2%), `PER ITEM` = Rp 80,000 (
 
 ![Revenue by service](outputs/charts/01_revenue_service.png)
 
-### Revenue Data Quality — quantified, not hidden
+### Revenue data quality
 
 - Only **66.2%** of transactions record revenue; SATUAN/per-item orders record it on just 1 of 48 rows (2.1%).
 - **Estimated unrecorded revenue, based on observed transaction patterns:** roughly **Rp 3.1 million — about 30% of the observed Rp 10.44 million** (`revenue_gap_report.csv`). This is an estimate from per-service averages, not tracked lost revenue.
@@ -144,7 +144,7 @@ Customers were segmented on observed revenue and order frequency (quartile-based
 
 ### Segment × SLA
 
-| Segment | Orders | Mean turnaround (days) | On-time |
+| Segment | Measurable orders | Mean turnaround (days) | On-time |
 |---|---:|---:|---:|
 | High-Value Occasional | 22 | 2.86 | 54.5% |
 | Premium Customer | 210 | 3.18 | 39.0% |
@@ -194,7 +194,7 @@ The failure concentrates in the **3 HARI promise — 286 orders, 64% of all meas
 
 ### Turnaround by Service
 
-| Service | Orders | Median days | P90 days | Orders completed late |
+| Service | Orders | Median days | P90 days | Late orders (%) |
 |---|---:|---:|---:|---:|
 | PCS | 327 | 3.0 | 4.4 | 59.3% |
 | PCL | 60 | 4.0 | 5.0 | 68.3% |
@@ -210,7 +210,7 @@ The failure concentrates in the **3 HARI promise — 286 orders, 64% of all meas
 
 ## Statistical Validation (`05_hypothesis_testing.py`)
 
-All tests are permutation, bootstrap, or Monte Carlo methods implemented in NumPy — no parametric distribution assumptions. Both supported and rejected hypotheses are reported:
+All tests are permutation, bootstrap, or Monte Carlo methods implemented in NumPy — no parametric distribution assumptions. Supported, rejected, and inconclusive verdicts are all reported:
 
 | Hypothesis | Verdict |
 |---|---|
@@ -246,7 +246,7 @@ Full statistics — tests, statistics, p-values, confidence intervals — are in
 **Implication:** Re-engineer the 3-day promise; adding capacity on busy days would not fix the miss rate.
 
 ### Finding 5 — Demand is structurally uneven across the week
-**Evidence:** Monday and Friday run ~30% above the flat expectation, Thursday 39% below (test supported).
+**Evidence:** Monday runs ~30% and Friday ~27% above the flat expectation, Thursday 39% below (test supported).
 **Implication:** Shift staffing toward Monday/Friday rather than smoothing every day equally.
 
 ### Finding 6 — Segment conclusions are real but coverage-sensitive

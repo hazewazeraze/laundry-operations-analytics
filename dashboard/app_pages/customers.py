@@ -71,7 +71,7 @@ with col1:
             y="revenue_percentage",
             horizontal=True,
             sort=False,
-            x_label="Share of recorded revenue (%)",
+            x_label="Share of observed revenue (%)",
         )
 
 with col2:
@@ -96,7 +96,7 @@ with st.container(border=True):
             d["segment_sla"].rename(
                 columns={
                     "segment": "Segment",
-                    "orders": "Orders",
+                    "orders": "Measurable orders",
                     "mean_days": "Mean turnaround (days)",
                     "on_time": "On-time orders",
                     "on_time_pct": "On-time (%)",
@@ -135,7 +135,7 @@ with st.container(border=True):
             "the latter association is not statistically distinguishable from zero."
         )
 
-with st.expander("Top 10 customers by recorded revenue"):
+with st.expander("Top 10 customers by observed revenue"):
     top = d["customers"].nlargest(10, "total_revenue")[
         [
             "customer_id",

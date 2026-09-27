@@ -52,7 +52,7 @@ with st.container(horizontal=True):
     )
 
 st.info(
-    "Recorded revenue concentrates in a smaller customer group (top 20% → 57.7%). "
+    "Observed revenue concentrates in a smaller customer group (top 20% \u2192 57.7%). "
     "Delivery promises are kept only 38% of the time — mostly failing on the "
     "standard 3-day promise. Revenue is recorded on 66.2% of transactions, so "
     "every financial figure is observed revenue."
