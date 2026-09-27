@@ -1,5 +1,4 @@
-# Laundry Operations Analytics
-# Hypothesis testing v1
+# 05 HYPOTHESIS TESTING
 #
 # Statistical validation for H1-H6 (numpy only, no scipy).
 # Tests: bootstrap concentration, Spearman permutation,

@@ -1,5 +1,4 @@
-# Laundry Operations Analytics
-# Exploratory data analysis v2
+# 02 EXPLORATORY ANALYSIS
 
 
 import numpy as np
