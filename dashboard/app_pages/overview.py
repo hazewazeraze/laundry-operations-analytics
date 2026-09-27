@@ -121,7 +121,8 @@ with st.container(border=True):
 
 st.caption(
     "Monday runs +29.9% over a flat week, Friday +27.3%, Thursday −39.0% — the "
-    "week has a clear shape. Sunday is closed, so it never enters the baseline."
+    "week has a clear shape. Sunday is closed, so it never enters the "
+    "baseline, and some of Monday's excess is spillover from that closure."
 )
 st.caption(
     "Data funnel: 472 exported rows → 467 validated transactions → 447 identifiable "

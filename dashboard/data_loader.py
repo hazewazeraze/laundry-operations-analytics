@@ -71,7 +71,7 @@ SEGMENT_ORDER = [
 def sensitivity(customers: pd.DataFrame) -> pd.DataFrame:
     """Segment revenue share: all customers vs revenue coverage >= 80%.
 
-    Recomputes the notebook's quartile segmentation rules on each subset so
+    Recomputes the scripts' quartile segmentation rules on each subset so
     both columns are internally consistent.
     """
 
